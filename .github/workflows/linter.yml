@@ -4,13 +4,16 @@ name: Lint
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    paths:
-      - '*.py'
+    branches: 
+      - main
+      - 'test/test_db'
+      - 'dev/**'
+      - '!dev/test'
   pull_request:
-    paths:
-      - '*.py'
+    branches:
+      - main
+      - dev
 
 jobs:
   flake8_py3:
