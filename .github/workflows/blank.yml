@@ -35,9 +35,6 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
-      # linter
-      - name: python-flake8
-        uses: julianwachholz/flake8-action@v1.1.0
   lint:
     name: Python Lint for AMP back pproject
     runs-on: ubuntu-latest
