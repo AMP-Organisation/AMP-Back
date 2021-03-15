@@ -22,6 +22,7 @@ class CRUD_disease:
         return new_disease
 
     def update_disease(self, dbSession: Session, data_to_up: disease_model.disease):
+        
         return "in progress"
 
     def delete_disease(self, dbSession: Session, id_disease: int):
