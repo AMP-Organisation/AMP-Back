@@ -10,15 +10,15 @@ class UserBase(BaseModel):
     first_name: str
     email: str
     username: str
-    age: int
+    age: Optional[int]
 
 
 class CreateUser(UserBase):
     age: int
     birth_date: datetime.datetime
-    dt_inscription: datetime.datetime
+    dt_inscription: Optional[datetime.datetime]
     last_login: Optional[datetime.datetime]
-    fk_group: int
+    fk_group: Optional[int]
 
 
 class UpdateUser(UserBase):
