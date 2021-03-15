@@ -13,3 +13,7 @@ dbEngine = create_engine(settings.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
 # the Dabatase Session : we use this variable to make the queries
 dbSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=dbEngine)
 
+# test de Baptiste, j'ai un p'tit problem
+# a base class that our class wil derivate
+dbBaseClass = declarative_base()
+dbBaseClass.metadata.create_all(bind=dbEngine)
