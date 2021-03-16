@@ -17,9 +17,15 @@ crudBaseOBJ = crud_base.CRUDBase([disease_model.disease, disease_model.disease, 
 # route to get all the disease 
 # rajouter : response_model=user_schema.UserResponse)
 @diseases_router.get("/")
-def get_all_disease(id: int = -1, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
+def get_all_disease(db: Session = Depends(db_dependencies.get_db), limit: int = 10):
     print("Query to get all the disease")
     all_disease = crudObj.get_all_disease(db, limit)
+    return all_disease
+
+@diseases_router.get("/{id_dis}")
+def get_all_disease(id_dis: int, db: Session = Depends(db_dependencies.get_db)):
+    print("Query to get one the disease")
+    all_disease = crudObj.get_one_disease(db, id_dis)
     return all_disease
 
 @diseases_router.get("/type")
