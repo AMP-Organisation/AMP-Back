@@ -15,6 +15,7 @@ crudObj = disease_crud.CRUD_disease()
 crudBaseOBJ = crud_base.CRUDBase([disease_model.disease, disease_model.disease, disease_model.disease_base])
 
 # route to get all the disease 
+# rajouter : response_model=user_schema.UserResponse)
 @diseases_router.get("/")
 def get_all_disease(id: int = -1, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
     print("on va faire la query")
