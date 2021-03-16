@@ -18,21 +18,20 @@ crudBaseOBJ = crud_base.CRUDBase([disease_model.disease, disease_model.disease, 
 # rajouter : response_model=user_schema.UserResponse)
 @diseases_router.get("/")
 def get_all_disease(id: int = -1, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
-    print("on va faire la query")
-    print("")
+    print("Query to get all the disease")
     all_disease = crudObj.get_all_disease(db, limit)
     return all_disease
 
 @diseases_router.get("/type")
 def get_all_disease(id: int = -1, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
-    print("on va faire la query ppour les type")
+    print("Query for the type")
     all_disease_type = crudObj.get_all_disease_type(db, limit)
     return all_disease_type
 
 # note : je dirais que seul les admin pourrait en rajouter non ?
 @diseases_router.post("/")
 def add_a_disease(body_disease: disease_schemas.baseDisease, dbSession: Session = Depends(db_dependencies.get_db)):
-    print("le body")
+    print("data received in body")
     print(body_disease)
     #new_disease_added = crudBaseOBJ.create(dbSession, obj_in=body_disease)
     new_disease_added = crudObj.add_a_disease(db, body_disease)
@@ -51,13 +50,13 @@ def put_disease(body_disease: disease_schemas.baseDisease, dbSession: Session = 
 @diseases_router.patch("/")
 def patch_disease(body_disease: disease_schemas.baseDisease, dbSession: Session = Depends(db_dependencies.get_db)):
     
-    return {"message":"in pprogress PATCH"}
+    return {"message":"in progress PATCH"}
 
 
 # on va vraiment faire un delete ? en tout cas seul les admins devrait pouvoir le faire non ?
 @diseases_router.delete("/")
 def delete_a_disease(body_disease: disease_schemas.disease, dbSession: Session = Depends(db_dependencies.get_db)):
-    print("la supppression d'une maladie de la bdd")
+    print("Delete of a disease")
     print(body_disease)
     print(body_disease.id)
     elem_to_del = crudObj.delete_disease(dbSession, body_disease.id)
