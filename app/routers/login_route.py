@@ -11,17 +11,21 @@ router = APIRouter(
     prefix='/login'
 )
 
-@router.get('/', response_model=message.Message)
-def connection_user():
-    return {"message":"You have to use a POST request"}
 
+@router.get('', response_model=message.Message)
+def connection_user():
+    return {"message": "You have to use a POST request"}
+
+
+"""
 # user log in
 @router.post('/', response_model=user_schema.UserResponse)
 def connection_user():
     return {"message":"in progress"}
+"""
 
-# new user 
+
+# new user
 @router.post('/signup', response_model=user_schema.UserResponse)
-def sign_up_user(body : user_schema.UserBase):
-
-    return {"message":"in progress"}
+def sign_up_user(body: user_schema.UserBase):
+    return {"message": "in progress"}

@@ -11,6 +11,10 @@ class CRUDUser(CRUDBase[Users, CreateUser, UpdateUser]):
         search_user = db.query(self.model).filter_by(username=username).first()
         return search_user
 
+    def get_by_email(self, db: Session, email: str) -> Optional[Users]:
+        search_user = db.query(self.model).filter_by(email=email).first()
+        return search_user
+
     @staticmethod
     def relation(db: Session, *, value: any) -> Optional[Users]:
         find_relation = db.query(Users).join(Group).filter(Group.Type == value).first()

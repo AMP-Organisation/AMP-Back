@@ -21,14 +21,20 @@ def show_all_user(db: Session = Depends(get_db), skip: int = 0, limit: int = 100
     return all_user
 
 
-@router.get('/get', response_model=user_schema.UserResponse)
+@router.post('/get', response_model=user_schema.UserResponse)
 def show_user(*, db: Session = Depends(get_db), user_in: user_schema.GetUser):
-    user_found = user_crud.user.get_by_username(db, user_in.username)
+    user_found = user_crud.user.get_by_email(db, user_in.email)
+    if not user_found:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The user do not exist in the system.",
+        )
+
     return user_found
 
 
 @router.get('/getRelation', response_model=user_schema.UserResponse)
-def show_user(relation: group_schema.GroupBase, db: Session = Depends(get_db)):
+def show_relation(relation: group_schema.GroupBase, db: Session = Depends(get_db)):
     user_found = user_crud.user.relation(db, value=relation.Type)
     return user_found
 

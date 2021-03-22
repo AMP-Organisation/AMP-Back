@@ -6,10 +6,10 @@ from pydantic import BaseModel
 
 class UserBase(BaseModel):
     id: Optional[int]
-    last_name: str
-    first_name: str
-    email: str
-    username: str
+    last_name: Optional[str]
+    first_name: Optional[str]
+    email: Optional[str]
+    username: Optional[str]
     age: Optional[int]
 
 
@@ -32,7 +32,8 @@ class DeleteUser(BaseModel):
 
 
 class GetUser(BaseModel):
-    username: str
+    username: Optional[str]
+    email: Optional[str]
     pass
 
 
