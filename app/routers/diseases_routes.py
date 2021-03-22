@@ -22,17 +22,18 @@ def get_all_disease(db: Session = Depends(db_dependencies.get_db), limit: int = 
     all_disease = crudObj.get_all_disease(db, limit)
     return all_disease
 
-@diseases_router.get("/{id_dis}")
-def get_all_disease(id_dis: int, db: Session = Depends(db_dependencies.get_db)):
-    print("Query to get one the disease")
-    all_disease = crudObj.get_one_disease(db, id_dis)
-    return all_disease
 
 @diseases_router.get("/type")
 def get_all_disease(id: int = -1, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
     print("Query for the type")
     all_disease_type = crudObj.get_all_disease_type(db, limit)
     return all_disease_type
+    
+@diseases_router.get("/{id_dis}")
+def get_all_disease(id_dis: int, db: Session = Depends(db_dependencies.get_db)):
+    print("Query to get one the disease")
+    all_disease = crudObj.get_one_disease(db, id_dis)
+    return all_disease
 
 # note : je dirais que seul les admin pourrait en rajouter non ?
 @diseases_router.post("/")
