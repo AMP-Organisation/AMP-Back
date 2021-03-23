@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 origins = [
     "http://localhost",
     "http://localhost:8080",  # le front end en localhost
-    "https://assistant-medical-personnel.netlify.app/"  # le front end en prod
+    "https://assistant-medical-personnel.netlify.app"  # le front end en prod
 ]
 
 app = FastAPI()
