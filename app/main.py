@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
+from .core.settings import settings
+from .routers.users_route import user_router
+from .routers.login_route import login_router
 from .routers import diseases_routes
-
-app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
     "http://localhost",
@@ -18,9 +19,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app = FastAPI()
 
-#app.include_router(users_route.router, prefix=settings.API_V1_STR)
-app.include_router(diseases_routes.diseases_router) # faudra rajouter le prefix
+app.include_router(user_router, prefix=settings.API_V1_STR)
+app.include_router(login_router, prefix=settings.API_V1_STR)
+app.include_router(diseases_routes.diseases_router, prefix=settings.API_V1_STR) # peut etre changer l'import. faudra rajouter le prefix
 
 @app.get("/")
 def read_root():
