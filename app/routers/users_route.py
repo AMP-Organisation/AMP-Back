@@ -7,12 +7,12 @@ from ..core.db_dependencies import get_db
 from ..crud import user_crud
 from ..schemas import user_schema, message, group_schema
 
-router = APIRouter(
+user_router = APIRouter(
     prefix='/users'
 )
 
 
-@router.get('/getAll', response_model=List[user_schema.UserResponse])
+@user_router.get('/getAll', response_model=List[user_schema.UserResponse])
 def show_all_user(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> Any:
     """
     :return: all user in database
@@ -21,7 +21,7 @@ def show_all_user(db: Session = Depends(get_db), skip: int = 0, limit: int = 100
     return all_user
 
 
-@router.post('/get', response_model=user_schema.UserResponse)
+@user_router.post('/get', response_model=user_schema.UserResponse)
 def show_user(*, db: Session = Depends(get_db), user_in: user_schema.GetUser):
     user_found = user_crud.user.get_by_email(db, user_in.email)
     if not user_found:
@@ -33,13 +33,13 @@ def show_user(*, db: Session = Depends(get_db), user_in: user_schema.GetUser):
     return user_found
 
 
-@router.get('/getRelation', response_model=user_schema.UserResponse)
+@user_router.get('/getRelation', response_model=user_schema.UserResponse)
 def show_relation(relation: group_schema.GroupBase, db: Session = Depends(get_db)):
     user_found = user_crud.user.relation(db, value=relation.Type)
     return user_found
 
 
-@router.post('/addUser', response_model=user_schema.UserResponse)
+@user_router.post('/addUser', response_model=user_schema.UserResponse)
 def add_user(*, db: Session = Depends(get_db), user_in: user_schema.CreateUser) -> Any:
     user = user_crud.user.get_by_username(db, user_in.username)
     if user:
@@ -52,7 +52,7 @@ def add_user(*, db: Session = Depends(get_db), user_in: user_schema.CreateUser) 
     return new_user
 
 
-@router.put('/updateUser', response_model=user_schema.UserResponse)
+@user_router.put('/updateUser', response_model=user_schema.UserResponse)
 def update_user(*, db: Session = Depends(get_db), user_in: user_schema.UpdateUser) -> Any:
     """
     :param db: Database
@@ -69,7 +69,7 @@ def update_user(*, db: Session = Depends(get_db), user_in: user_schema.UpdateUse
     return updated_user
 
 
-@router.delete('/deleteUser', response_model=message.Message)
+@user_router.delete('/deleteUser', response_model=message.Message)
 def delete_user(*, db: Session = Depends(get_db), user_in: user_schema.DeleteUser) -> Any:
     """
     :param user_in:
