@@ -11,3 +11,5 @@ class Base:
     @declared_attr
     def __tablename__(self) -> str:
         return self.__name__.lower()
+
+
