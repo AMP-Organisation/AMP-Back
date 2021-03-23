@@ -41,7 +41,7 @@ def add_a_disease(body_disease: disease_schemas.baseDisease, dbSession: Session 
     print("data received in body")
     print(body_disease)
     #new_disease_added = crudBaseOBJ.create(dbSession, obj_in=body_disease)
-    new_disease_added = crudObj.add_a_disease(db, body_disease)
+    new_disease_added = crudObj.add_a_disease(dbSession, body_disease)
     return new_disease_added
 
 
