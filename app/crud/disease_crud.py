@@ -7,6 +7,9 @@ class CRUD_disease:
     def get_all_disease(self, dbSession: Session, limit: int = 100):
         return dbSession.query(disease_model.disease).limit(limit).all()
 
+    def get_all_disease_pages(self, dbSession: Session, limit: int = 100):
+        return dbSession.query(disease_model.disease).limit(limit).all()
+
     def get_one_disease(self, dbSession: Session, id_to_find: int):
         return dbSession.query(disease_model.disease).filter(disease_model.disease_base.id == id_to_find).first()
 
