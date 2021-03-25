@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-
 from .core.settings import settings
 from .routers.users_route import user_router
 from .routers.login_route import login_router
