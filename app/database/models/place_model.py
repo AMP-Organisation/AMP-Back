@@ -21,4 +21,4 @@ class place_type(Base):
 
 class place_tags(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True)
-    type = Column(VARCHAR(50), nullable=False)
+    tags = Column(VARCHAR(50), nullable=False)

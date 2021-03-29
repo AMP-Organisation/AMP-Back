@@ -36,7 +36,8 @@ class DeletePlace(BaseModel):
 
 
 class GetPlace(BaseModel):
-    address: str
+    id: Optional[int]
+    address: Optional[str]
     department: Optional[str]
     city: Optional[str]
     pass
