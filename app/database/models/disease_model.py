@@ -15,7 +15,26 @@ class disease(disease_base):
     description = Column(String)
     is_vaccine = Column(Boolean)
 
+class disease_more(disease):
+    is_treatment = Column(Boolean)
+    danger_level = Column(Integer)
+
 class disease_type(session.dbBaseClass):
     __tablename__ = "disease_type"
     id = Column(Integer, primary_key=True, index=True)
     type_name = Column(String, unique=True)
+
+# je n'ai pas le meme nom entre mon model et le schema et donc je converti les données...
+class convertSchemaToModel():
+    dmodel = disease_more()
+
+    def __init__(self, schemaToConvert):
+        print("convert schema to model")
+        print(schemaToConvert)
+        self.dmodel.id = schemaToConvert['id']
+        self.dmodel.name_disease = schemaToConvert['name']
+        self.dmodel.description = schemaToConvert['description']
+        self.dmodel.is_vaccine = schemaToConvert['is_vaccine']
+
+    def get_converted(self):
+        return self.dmodel

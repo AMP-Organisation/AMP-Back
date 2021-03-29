@@ -10,6 +10,10 @@ class baseDisease(disease):
     description: str
     is_vaccine: bool
 
+class moreDisease(baseDisease):
+    is_treatment: bool
+    danger_level: int
+
 class typeDisease(BaseModel):
     id: Optional[int]
     type: str

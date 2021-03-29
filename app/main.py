@@ -6,9 +6,18 @@ from .routers.login_route import login_router
 from .routers import diseases_routes
 from fastapi.middleware.cors import CORSMiddleware
 
+
+
+app = FastAPI()
+
 origins = [
     "http://localhost",
     "http://localhost:8080", # le front end
+    "http://localhost:8080/api"
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:8080/api",
+    "http://127.0.0.1:8081",
+    "http://127.0.0.1"
 ]
 
 app.add_middleware(
@@ -18,8 +27,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app = FastAPI()
 
 app.include_router(user_router, prefix=settings.API_V1_STR)
 app.include_router(login_router, prefix=settings.API_V1_STR)

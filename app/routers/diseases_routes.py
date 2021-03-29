@@ -32,8 +32,10 @@ def get_all_disease(id: int = -1, db: Session = Depends(db_dependencies.get_db),
 @diseases_router.get("/{id_dis}")
 def get_all_disease(id_dis: int, db: Session = Depends(db_dependencies.get_db)):
     print("Query to get one the disease")
-    all_disease = crudObj.get_one_disease(db, id_dis)
-    return all_disease
+    one_disease = crudObj.get_one_disease(db, id_dis)
+    print("le resultat obtenu")
+    print(one_disease)
+    return one_disease
 
 # note : je dirais que seul les admin pourrait en rajouter non ?
 @diseases_router.post("/")
@@ -49,14 +51,19 @@ def add_a_disease(body_disease: disease_schemas.baseDisease, dbSession: Session 
 # put -> modification compplpete
 # patch -> modification partielle
 @diseases_router.put("/")
-def put_disease(body_disease: disease_schemas.baseDisease, dbSession: Session = Depends(db_dependencies.get_db)):
-
-    return {"message":"in progress PUT"}
+def put_disease(body_disease: disease_schemas.moreDisease, dbSession: Session = Depends(db_dependencies.get_db)):
+    print("*in PUT route for disease*")
+    print(body_disease)
+    updated_disease = crudObj.update_disease(dbSession, body_disease)
+    return updated_disease
+    #return {"message":"in progress PUT"}
 
 
 @diseases_router.patch("/")
-def patch_disease(body_disease: disease_schemas.baseDisease, dbSession: Session = Depends(db_dependencies.get_db)):
-    
+def patch_disease(body_disease: disease_schemas.moreDisease, dbSession: Session = Depends(db_dependencies.get_db)):
+    print("*in PATCH route for disease*")
+    print(body_disease)
+    updated_disease = crudObj.patch_a_disease(dbSession, body_disease)
     return {"message":"in progress PATCH"}
 
 

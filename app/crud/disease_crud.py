@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session 
+from fastapi.encoders import jsonable_encoder
 
 from ..database.models import disease_model
 
@@ -10,8 +11,9 @@ class CRUD_disease:
     def get_all_disease_pages(self, dbSession: Session, limit: int = 100):
         return dbSession.query(disease_model.disease).limit(limit).all()
 
+    # get only one disease according to the id, but with more data than the all query
     def get_one_disease(self, dbSession: Session, id_to_find: int):
-        return dbSession.query(disease_model.disease).filter(disease_model.disease_base.id == id_to_find).first()
+        return dbSession.query(disease_model.disease_more).filter(disease_model.disease_more.id == id_to_find).first()
 
     def get_all_disease_type(self, dbSession: Session, limit: int = 10):
         return dbSession.query(disease_model.disease_type).limit(limit).all()
@@ -27,9 +29,27 @@ class CRUD_disease:
         dbSession.refresh(new_disease)
         return new_disease
 
+    def patch_a_disease(self, dbSession: Session, data_to_up: disease_model.disease):
+
+        return "patch in progress"
+
+    # A refactoriser !
     def update_disease(self, dbSession: Session, data_to_up: disease_model.disease):
+        data_encoded = jsonable_encoder(data_to_up)
+        print("data pydantic converti en json")
+        print(data_encoded)
+        print(data_encoded['id'])
+        converter = disease_model.convertSchemaToModel(data_encoded)
+        converted = converter.get_converted()
+        print("converted")
+        print(converted.name_disease)
+        converted.id += 20
         
-        return "in progress"
+        dbSession.add(converted)
+        dbSession.commit()
+        dbSession.refresh(converted)
+        return converted
+        #return "in progress"
 
     def delete_disease(self, dbSession: Session, id_disease: int):
         disease_to_del = dbSession.query(disease_model.disease_base).filter(disease_model.disease_base.id == id_disease).first()
