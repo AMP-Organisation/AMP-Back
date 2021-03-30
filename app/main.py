@@ -6,12 +6,6 @@ from .routers import diseases_routes
 from .routers.place_route import place_router
 from fastapi.middleware.cors import CORSMiddleware
 
-origins = [
-    "http://localhost",
-    "http://localhost:8080",  # le front end en localhost
-    "https://assistant-medical-personnel.netlify.app"  # le front end en prod
-]
-
 app = FastAPI()
 
 app.include_router(user_router, prefix=settings.API_V1_STR)
@@ -19,6 +13,13 @@ app.include_router(login_router, prefix=settings.API_V1_STR)
 app.include_router(place_router, prefix=settings.API_V1_STR)
 app.include_router(diseases_routes.diseases_router, prefix=settings.API_V1_STR)  # peut etre changer l'import. faudra
 # rajouter le prefix
+
+# CORS policies
+origins = [
+    "http://localhost",
+    "http://localhost:8080",  # le front end en localhost
+    "https://assistant-medical-personnel.netlify.app"  # le front end en prod
+]
 
 app.add_middleware(
     CORSMiddleware,
