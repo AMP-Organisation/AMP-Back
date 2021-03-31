@@ -23,7 +23,9 @@ class CRUD_disease:
         new_disease.name_disease = data_to_add.name
         new_disease.description = data_to_add.description
         new_disease.is_vaccine = data_to_add.is_vaccine
-
+        print("new disease")
+        print(new_disease)
+        print(new_disease.id)
         dbSession.add(new_disease)
         dbSession.commit()
         dbSession.refresh(new_disease)
@@ -34,6 +36,7 @@ class CRUD_disease:
         return "patch in progress"
 
     # A refactoriser !
+    # probleme de nom de champ, j'ai du faire une sorte de converter
     def update_disease(self, dbSession: Session, data_to_up: disease_model.disease):
         data_encoded = jsonable_encoder(data_to_up)
         print("data pydantic converti en json")
@@ -43,8 +46,13 @@ class CRUD_disease:
         converted = converter.get_converted()
         print("converted")
         print(converted.name_disease)
-        converted.id += 20
-        
+        converted.id = None
+
+        disease_to_del = dbSession.query(disease_model.disease_base).filter(disease_model.disease_base.id == data_encoded['id']).first()
+        print("celle a supp avant")
+        print(disease_to_del)
+        dbSession.delete(disease_to_del)
+
         dbSession.add(converted)
         dbSession.commit()
         dbSession.refresh(converted)
