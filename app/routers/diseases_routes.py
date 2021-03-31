@@ -75,3 +75,4 @@ def delete_a_disease(body_disease: disease_schemas.disease, dbSession: Session =
     print(body_disease.id)
     elem_to_del = crudObj.delete_disease(dbSession, body_disease.id)
     return elem_to_del
+    #return body_disease.id
