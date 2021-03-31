@@ -14,6 +14,7 @@ class Users(Base):
     birth_date = Column(TIMESTAMP, nullable=False)
     dt_inscription = Column(TIMESTAMP, nullable=False)
     last_login = Column(TIMESTAMP)
+    password = Column(VARCHAR(100), unique=True)
     fk_group = Column(Integer, ForeignKey('group.id'), autoincrement=True)
 
 

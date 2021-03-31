@@ -19,6 +19,7 @@ python-multipart = "*"
 requests = "*"
 python-dotenv = "*"
 aiofiles = "0.6.0"
+passlib = "*"
 
 [requires]
 python_version = "3.8"
