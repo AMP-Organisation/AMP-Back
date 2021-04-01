@@ -35,6 +35,8 @@ class convertSchemaToModel():
         self.dmodel.name_disease = schemaToConvert['name']
         self.dmodel.description = schemaToConvert['description']
         self.dmodel.is_vaccine = schemaToConvert['is_vaccine']
+        self.dmodel.danger_level = schemaToConvert['danger_level']
+        self.dmodel.is_treatment = schemaToConvert['is_treatment']
 
     def get_converted(self):
         return self.dmodel
