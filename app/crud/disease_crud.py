@@ -35,9 +35,27 @@ class CRUD_disease:
         dbSession.refresh(new_disease)
         return new_disease
 
-    def patch_a_disease(self, dbSession: Session, data_to_up: disease_model.disease):
+    def patch_a_disease(self, dbSession: Session, data_to_up: disease_model.disease, id_dis: int):
+        print("data_to_up ")
+        print(data_to_up.id)
+        print(data_to_up.name)
+        print(data_to_up.description)
+        print(data_to_up.is_vaccine)
+        print(data_to_up.is_treatment)
+        print(data_to_up.danger_level)
 
-        return "patch in progress"
+        dis_to_patch = dbSession.query(disease_model.disease_more).filter(disease_model.disease_more.id == data_to_up.id).first()
+        dis_to_patch.name_disease = data_to_up.name if data_to_up.name != None else dis_to_patch.name_disease
+        dis_to_patch.description = data_to_up.description if data_to_up.description != None else dis_to_patch.description
+        print("data found")
+        print(dis_to_patch)
+        print(dis_to_patch.name_disease)
+        print(dis_to_patch.description)
+        print(dbSession.dirty)
+        dbSession.commit()
+        patched = dbSession.query(disease_model.disease_more).filter(disease_model.disease_more.id == data_to_up.id).first()
+        #return "patch in progress"
+        return patched
 
     # A refactoriser !
     # probleme de nom de champ, j'ai du faire une sorte de converter

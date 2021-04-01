@@ -63,26 +63,28 @@ def put_disease(body_disease: disease_schemas.moreDisease, dbSession: Session = 
 def patch_disease(body_disease: disease_schemas.diseasePatch, dbSession: Session = Depends(db_dependencies.get_db)):
     print("*in PATCH route for disease*")
     print(body_disease)
-    disease_in_base = crudObjDisease.get_one_disease(dbSession, body_disease.id)
-    print("disease to Patch")
-    print(disease_in_base)
-    print(disease_in_base.id)
-    print(disease_in_base.is_treatment)
-    print(disease_in_base.danger_level)
-    newName = body_disease.name if body_disease.name != None else disease_in_base.name_disease
-    newDescription = body_disease.description if body_disease.description != None else disease_in_base.description
-    # i create a full schema object from the data receive (to update) and data in db
-    updated_disease = disease_schemas.moreDisease(
-        id = disease_in_base.id,
-        name = newName,
-        description = newDescription,
-        is_vaccine = disease_in_base.is_vaccine,
-        is_treatment = disease_in_base.is_treatment,
-        danger_level = disease_in_base.danger_level
-    )
-    print(updated_disease)
-    updated_disease_final = crudObjDisease.update_disease(dbSession, updated_disease)
-    return updated_disease_final
+    patched = crudObjDisease.patch_a_disease(dbSession, body_disease, body_disease.id)
+    return patched
+    # disease_in_base = crudObjDisease.get_one_disease(dbSession, body_disease.id)
+    # print("disease to Patch")
+    # print(disease_in_base)
+    # print(disease_in_base.id)
+    # print(disease_in_base.is_treatment)
+    # print(disease_in_base.danger_level)
+    # newName = body_disease.name if body_disease.name != None else disease_in_base.name_disease
+    # newDescription = body_disease.description if body_disease.description != None else disease_in_base.description
+    # # i create a full schema object from the data receive (to update) and data in db
+    # updated_disease = disease_schemas.moreDisease(
+    #     id = disease_in_base.id,
+    #     name = newName,
+    #     description = newDescription,
+    #     is_vaccine = disease_in_base.is_vaccine,
+    #     is_treatment = disease_in_base.is_treatment,
+    #     danger_level = disease_in_base.danger_level
+    # )
+    # print(updated_disease)
+    #updated_disease_final = crudObjDisease.update_disease(dbSession, updated_disease)
+    #return updated_disease_final
     #return {"message":"in progress PATCH"}
 
 
