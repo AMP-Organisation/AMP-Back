@@ -14,6 +14,7 @@ origins = [
     "http://localhost",
     "http://localhost:8080", # le front end
     "http://localhost:8080/api"
+    "http://localhost:8080",
     "http://127.0.0.1:8080",
     "http://127.0.0.1:8080/api",
     "http://127.0.0.1:8081",

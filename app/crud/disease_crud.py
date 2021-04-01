@@ -18,14 +18,18 @@ class CRUD_disease:
     def get_all_disease_type(self, dbSession: Session, limit: int = 10):
         return dbSession.query(disease_model.disease_type).limit(limit).all()
 
-    def add_a_disease(self, dbSession: Session, data_to_add: disease_model.disease):
-        new_disease = disease_model.disease()
+    def add_a_disease(self, dbSession: Session, data_to_add: disease_model.disease_more):
+        new_disease = disease_model.disease_more()
         new_disease.name_disease = data_to_add.name
         new_disease.description = data_to_add.description
         new_disease.is_vaccine = data_to_add.is_vaccine
+        new_disease.is_treatment = data_to_add.is_treatment
+        new_disease.danger_level = data_to_add.danger_level
         print("new disease")
         print(new_disease)
         print(new_disease.id)
+        print(new_disease.is_treatment )
+        print(new_disease.danger_level)
         dbSession.add(new_disease)
         dbSession.commit()
         dbSession.refresh(new_disease)
