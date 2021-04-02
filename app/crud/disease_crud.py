@@ -4,10 +4,11 @@ from fastapi.encoders import jsonable_encoder
 from ..database.models import disease_model
 
 class CRUD_disease:
-# j'ai remis une limite a 100 ici meme si plus en amont j'ai mis 10 
+    # I set a limit to 100 by default
     def get_all_disease(self, dbSession: Session, limit: int = 100):
         return dbSession.query(disease_model.disease).limit(limit).all()
 
+    # not finished : to paginate the disease
     def get_all_disease_pages(self, dbSession: Session, limit: int = 100):
         return dbSession.query(disease_model.disease).limit(limit).all()
 
@@ -18,6 +19,7 @@ class CRUD_disease:
     def get_all_disease_type(self, dbSession: Session, limit: int = 10):
         return dbSession.query(disease_model.disease_type).limit(limit).all()
 
+    # I think I can easily refactor that 
     def add_a_disease(self, dbSession: Session, data_to_add: disease_model.disease_more):
         new_disease = disease_model.disease_more()
         new_disease.name_disease = data_to_add.name
@@ -25,11 +27,6 @@ class CRUD_disease:
         new_disease.is_vaccine = data_to_add.is_vaccine
         new_disease.is_treatment = data_to_add.is_treatment
         new_disease.danger_level = data_to_add.danger_level
-        print("new disease")
-        print(new_disease)
-        print(new_disease.id)
-        print(new_disease.is_treatment )
-        print(new_disease.danger_level)
         dbSession.add(new_disease)
         dbSession.commit()
         dbSession.refresh(new_disease)
@@ -66,7 +63,6 @@ class CRUD_disease:
         dbSession.commit()
         dbSession.refresh(converted)
         return converted
-        #return "in progress"
 
     def delete_disease(self, dbSession: Session, id_disease: int):
         disease_to_del = dbSession.query(disease_model.disease_base).filter(disease_model.disease_base.id == id_disease).first()
