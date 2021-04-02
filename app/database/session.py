@@ -9,7 +9,12 @@ from sqlalchemy.orm import sessionmaker
 from ..core.settings import settings
 
 # the database engine initialisation
-dbEngine = create_engine(settings.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
+
+database_url = settings.DATABASE_URL
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+dbEngine = create_engine(database_url, pool_pre_ping=True)
 # the Dabatase Session : we use this variable to make the queries
 dbSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=dbEngine)
 
