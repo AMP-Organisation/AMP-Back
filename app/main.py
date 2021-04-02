@@ -17,6 +17,7 @@ app.include_router(diseases_routes.diseases_router, prefix=settings.API_V1_STR) 
 # CORS policies
 origins = [
     "http://localhost",
+    "http://127.0.0.1:8081",
     "http://localhost:8080",  # le front end en localhost
     "https://assistant-medical-personnel.netlify.app"  # le front end en prod
 ]
@@ -28,7 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.get("/")
 def read_root():
