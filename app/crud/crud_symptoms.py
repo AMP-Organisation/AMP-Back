@@ -1,5 +1,5 @@
 from ..crud.crud_base import CRUDBase
-from ..database.models.symtoms_model import Symptoms
+from ..database.models.symptoms_model import Symptoms
 from ..database.models.disease_model import disease
 from ..schemas.symptoms_schema import CreateSymptoms, UpdateSymptoms
 from sqlalchemy.orm import Session
