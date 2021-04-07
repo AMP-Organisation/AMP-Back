@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from ..core.db_dependencies import get_db
-from ..database.models.symtoms_model import Symptoms
+from ..database.models.symptoms_model import Symptoms
 from ..schemas import symptoms_schema, disease_schemas
 from ..crud.crud_symptoms import symptoms
 
