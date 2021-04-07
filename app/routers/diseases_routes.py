@@ -14,7 +14,8 @@ diseases_router = APIRouter(
 crudObjDisease = disease_crud.CRUD_disease()
 crudBaseOBJ = crud_base.CRUDBase([disease_model.disease, disease_model.disease, disease_model.disease_base])
 
-# route to get all the disease 
+
+# route to get all the disease
 # rajouter : response_model=user_schema.UserResponse)
 @diseases_router.get("/")
 def get_all_disease(db: Session = Depends(db_dependencies.get_db), limit: int = 10):
@@ -28,12 +29,14 @@ def get_all_disease(id: int = -1, db: Session = Depends(db_dependencies.get_db),
     print("GET /type Query for the type, route for disease*")
     all_disease_type = crudObjDisease.get_all_disease_type(db, limit)
     return all_disease_type
-    
+
+
 @diseases_router.get("/{id_dis}")
 def get_all_disease(id_dis: int, db: Session = Depends(db_dependencies.get_db)):
     print("GET Query to get one the disease, route for disease*")
     one_disease = crudObjDisease.get_one_disease(db, id_dis)
     return one_disease
+
 
 # nb : I think, just the administrator should/must be able to modify the db
 @diseases_router.post("/")
@@ -54,6 +57,7 @@ def put_disease(body_disease: disease_schemas.moreDisease, dbSession: Session = 
     updated_disease = crudObjDisease.update_disease(dbSession, body_disease)
     return updated_disease
 
+
 # for now, PATCH only work on descriptioon and name
 # And PARTIALLY : the ID stay the same, juste up the others data
 @diseases_router.patch("/")
@@ -62,6 +66,7 @@ def patch_disease(body_disease: disease_schemas.diseasePatch, dbSession: Session
     print(body_disease)
     patched = crudObjDisease.patch_a_disease(dbSession, body_disease, body_disease.id)
     return patched
+
 
 # we can delete, but like the POST, only the admin should be able to do that, doesn't it ?
 @diseases_router.delete("/")

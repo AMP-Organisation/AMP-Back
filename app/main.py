@@ -4,6 +4,7 @@ from .routers.users_route import user_router
 from .routers.login_route import login_router
 from .routers import diseases_routes
 from .routers.place_route import place_router
+from .routers.symptoms_routes import symptoms_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -13,6 +14,7 @@ app.include_router(login_router, prefix=settings.API_V1_STR)
 app.include_router(place_router, prefix=settings.API_V1_STR)
 app.include_router(diseases_routes.diseases_router, prefix=settings.API_V1_STR)  # peut etre changer l'import. faudra
 # rajouter le prefix
+app.include_router(symptoms_router, prefix=settings.API_V1_STR)
 
 # CORS policies
 origins = [
@@ -29,6 +31,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/")
 def read_root():

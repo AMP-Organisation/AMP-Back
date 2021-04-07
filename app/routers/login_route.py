@@ -1,11 +1,8 @@
-from typing import Any, List
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..core.db_dependencies import get_db
 from ..crud import crud_auth
-from ..auth import security
 from ..schemas import auth_schema, message
 
 login_router = APIRouter(
