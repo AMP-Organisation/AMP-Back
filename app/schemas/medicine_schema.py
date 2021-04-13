@@ -9,9 +9,8 @@ class medicine(BaseModel):
     id: Optional[int]
 
 
-# a specific schema for patch a disease
-class medicinePatch(disease):
-    name: Optional[str]
+# a specific schema for patch a medicine
+class medicinePatch(medicine):
     name: Optional[str]
     dose: Optional[int]
     dose_max: Optional[int]
@@ -20,6 +19,11 @@ class medicinePatch(disease):
     # is_treatment: Optional[bool]
     # danger_level: Optional[int]
 
+class medicinePost(medicine):
+    name: str
+    dose: int
+    dose_max: int
+    # il y aura d'autre champs texte a mettre, ou au moins en optionnel
 
 class baseMedicine(medicine):
     name: str
