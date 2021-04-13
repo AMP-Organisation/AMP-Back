@@ -20,6 +20,10 @@ class CreateTreatment(TreatmentBase):
     ending_date: Optional[datetime.datetime]
 
 
+class GetTreatment(TreatmentBase):
+    all_treatment: List[int]
+
+
 class UpdateTreatment(TreatmentBase):
     id: int
 
