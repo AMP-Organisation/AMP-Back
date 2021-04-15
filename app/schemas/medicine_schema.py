@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -15,6 +15,10 @@ class CreatePrincipleActive(PrincipleActive):
 
 class UpdatePrincipleActive(PrincipleActive):
     id: int
+
+
+class GetPrincipleActive(PrincipleActive):
+    id: List[int]
 
 
 class PrincipleActiveResponse(PrincipleActive):

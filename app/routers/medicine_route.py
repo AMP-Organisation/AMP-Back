@@ -19,3 +19,12 @@ def show_all_user(db: Session = Depends(get_db), skip: int = 0, limit: int = 100
     """
     all_medicine = medicine.get_multi(db, skip=skip, limit=limit)
     return all_medicine
+
+
+@medicine_router.post('/find', response_model=List[medicine_schema.PrincipleActiveResponse])
+def show_all_user(*, db: Session = Depends(get_db), medicine_in: medicine_schema.GetPrincipleActive) -> Any:
+    """
+    :return: all user in database
+    """
+    principle_active_found = medicine.get_all_principle_active(db, medicine_in.id)
+    return principle_active_found

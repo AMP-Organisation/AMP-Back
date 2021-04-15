@@ -6,6 +6,7 @@ from .routers import diseases_routes
 from .routers.place_route import place_router
 from .routers.symptoms_routes import symptoms_router
 from .routers.medicine_route import medicine_router
+from .routers.health_card_route import health_card_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -17,6 +18,7 @@ app.include_router(diseases_routes.diseases_router, prefix=settings.API_V1_STR) 
 # rajouter le prefix
 app.include_router(symptoms_router, prefix=settings.API_V1_STR)
 app.include_router(medicine_router, prefix=settings.API_V1_STR)
+app.include_router(health_card_router, prefix=settings.API_V1_STR)
 
 # CORS policies
 origins = [
