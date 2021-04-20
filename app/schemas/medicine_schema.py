@@ -21,8 +21,11 @@ class medicinePatch(medicine):
 
 class medicinePost(medicine):
     name: str
+    description: Optional[str]
     dose: int
     dose_max: int
+    list_type: List[int]
+    delay: int
     # il y aura d'autre champs texte a mettre, ou au moins en optionnel
 
 class baseMedicine(medicine):

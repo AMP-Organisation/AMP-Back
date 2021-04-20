@@ -23,6 +23,16 @@ def get_all_medicine(db: Session = Depends(db_dependencies.get_db), limit: int =
     print(allMedi)
     return allMedi
 
+@medicine_router.get("/thumbnail/{id_thumb}")
+def get_all_thumbnail(id_thumb: int, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
+    oneThumbnail = crudMed.get_one_thumbnail(db, id_thumb)
+    return oneThumbnail
+
+@medicine_router.get("/thumbnail")
+def get_all_thumbnail(db: Session = Depends(db_dependencies.get_db), limit: int = 10):
+    allThumbnail = crudMed.get_all_thumbnail(db)
+    return allThumbnail
+
 
 @medicine_router.get("/{id_med}")
 def get_one_medicine(id_med: int, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
@@ -33,9 +43,11 @@ def get_one_medicine(id_med: int, db: Session = Depends(db_dependencies.get_db),
 
 
 @medicine_router.post("/")
-def add_a_medicine(body_medicine: medicine_schema.medicine, dbSession: Session = Depends(db_dependencies.get_db)):
-    
-    return { "message": "in progress POST medicine"}
+def add_a_medicine(body_medicine: medicine_schema.medicinePost, dbSession: Session = Depends(db_dependencies.get_db)):
+    print("dans POST medicine")
+    print(body_medicine)
+    new_med_created = crudMed.add_one_med(body_medicine, dbSession)
+    return new_med_created
 
 @medicine_router.patch("/")
 def get_all_medicine(db: Session = Depends(db_dependencies.get_db), limit: int = 10):

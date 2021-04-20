@@ -21,8 +21,12 @@ class CRUD_disease:
 
     # I think I can easily refactor that 
     def add_a_disease(self, dbSession: Session, data_to_add: disease_model.disease_more):
+        print("I am Adding a new disease")
+        print(data_to_add)
         new_disease = disease_model.disease_more()
-        new_disease.name_disease = data_to_add.name
+        # la il y a un poitn qu'il faudrait revoir dans la bdd
+        # et changer name_disease -> name
+        new_disease.name_disease = data_to_add.name_disease
         new_disease.description = data_to_add.description
         new_disease.is_vaccine = data_to_add.is_vaccine
         new_disease.is_treatment = data_to_add.is_treatment

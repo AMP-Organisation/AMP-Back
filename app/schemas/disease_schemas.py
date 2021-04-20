@@ -8,7 +8,7 @@ class disease(BaseModel):
 
 # a specific schema for patch a disease
 class diseasePatch(disease):
-    name_disease: Optional[str]
+    name: Optional[str]
     description: Optional[str]
     is_vaccine: Optional[bool]
     is_treatment: Optional[bool]
