@@ -14,6 +14,7 @@ class CRUDUser(CRUDBase[health_card, CreateHealthCard, UpdateHealthCard]):
     def delete(self, db: Session, user_id: int):
         current_health_card = self.get_by_user(db, user_id)
         self.remove(db=db, model_id=current_health_card.id)
+
     pass
 
 

@@ -19,7 +19,7 @@ def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_ca
     if not current_user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="The user do not exist in the system.",
+            detail="The user do not exist in the system yet.",
         )
     return current_user
 
@@ -27,6 +27,7 @@ def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_ca
 @health_card_router.delete('/deleteInformations', response_model=message.Message)
 def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_card_schema.GetHealthCard) -> Dict[
     str, str]:
+    print(health_card_in)
     current_user = crud_health_card.get_by_user(db, user_id=health_card_in.user_id)
 
     if not current_user:
@@ -36,3 +37,32 @@ def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_ca
         )
     crud_health_card.remove(db, model_id=current_user.id)
     return {"message": "User informations have been deleted."}
+
+
+def updateSchema(health_card_in: health_card_schema.CreateHealthCard):
+    if health_card_in.allergy is not None:
+        allergy = [health_card_in.allergy[element].get('id') for element in range(len(health_card_in.allergy))]
+        health_card_in.allergy = allergy
+
+    if health_card_in.disease is not None:
+        disease = [[health_card_in.disease[element].get('id') for element in range(len(health_card_in.disease))]]
+        health_card_in.disease = disease
+
+    if health_card_in.blood_group is not None:
+        blood_group = health_card_in.blood_group.get('name')
+        health_card_in.blood_group = blood_group
+    return health_card_in
+
+
+@health_card_router.post('/saveInformations', response_model=message.Message)
+def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_card_schema.CreateHealthCard) -> Dict[
+    str, str]:
+    current_user = crud_health_card.get_by_user(db, health_card_in.user_id)
+    new_schema = updateSchema(health_card_in)
+
+    if current_user:
+        crud_health_card.update(db=db, db_obj=current_user, obj_in=new_schema)
+    else:
+        crud_health_card.create(db=db, obj_in=new_schema)
+
+    return {"message": "Vos informations ont bien était enregristré."}

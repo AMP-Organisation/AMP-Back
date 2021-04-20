@@ -12,10 +12,13 @@ class HealthCardBase(BaseModel):
 
 
 class CreateHealthCard(HealthCardBase):
-    allergy: Optional[List[int]]
-    blood_group: Optional[str]
-    disease: Optional[List[int]]
+    allergy: Optional[List[object]]
+    blood_group: Optional[object]
+    disease: Optional[List[object]]
     user_id: Optional[int]
+
+    class Config:
+        arbitrary_types_allowed = True
 
 
 class UpdateHealthCard(HealthCardBase):
