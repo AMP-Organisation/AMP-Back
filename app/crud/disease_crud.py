@@ -21,10 +21,8 @@ class CRUD_disease:
 
     # I think I can easily refactor that 
     def add_a_disease(self, dbSession: Session, data_to_add: disease_model.disease_more):
-        print("I am Adding a new disease")
-        print(data_to_add)
         new_disease = disease_model.disease_more()
-        # la il y a un poitn qu'il faudrait revoir dans la bdd
+        # la il y a un point qu'il faudrait revoir dans la bdd
         # et changer name_disease -> name
         new_disease.name_disease = data_to_add.name_disease
         new_disease.description = data_to_add.description
@@ -49,18 +47,10 @@ class CRUD_disease:
     # probleme de nom de champ, j'ai du faire une sorte de converter
     def update_disease(self, dbSession: Session, data_to_up: disease_model.disease):
         data_encoded = jsonable_encoder(data_to_up)
-        print("data pydantic converti en json")
-        print(data_encoded)
-        print(data_encoded['id'])
         converter = disease_model.convertSchemaToModel(data_encoded)
         converted = converter.get_converted()
-        print("converted")
-        print(converted.name_disease)
         converted.id = None
-
         disease_to_del = dbSession.query(disease_model.disease_base).filter(disease_model.disease_base.id == data_encoded['id']).first()
-        print("celle a supp avant")
-        print(disease_to_del)
         dbSession.delete(disease_to_del)
 
         dbSession.add(converted)
