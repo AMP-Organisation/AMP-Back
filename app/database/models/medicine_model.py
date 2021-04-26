@@ -14,6 +14,7 @@ class medicine(Base):
     delay = Column(Integer, nullable=True)
     active_principle = Column(ARRAY(Integer), nullable=True)
     list_excipients = Column(ARRAY(Integer), nullable=True)
+    thumbnail_id = Column(Integer, nullable=True)
 
 class medecineShort(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True)
