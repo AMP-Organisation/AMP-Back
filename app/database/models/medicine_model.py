@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, Binary, Text
+from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.dialects.postgresql import ARRAY
-from .. import session
+
 from ...database.base_class import Base
+
 
 class medicine(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True)
@@ -16,12 +17,14 @@ class medicine(Base):
     list_excipients = Column(ARRAY(Integer), nullable=True)
     thumbnail_id = Column(Integer, nullable=True)
 
+
 class medecineShort(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True)
     name = Column(String)
     description = Column(Text)
     dose = Column(Integer)
     dose_max = Column(Integer)
+
 
 class thumbnail(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True)
