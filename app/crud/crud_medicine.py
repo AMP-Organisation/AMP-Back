@@ -1,9 +1,8 @@
+# created by BBR on 13-04-21
 from sqlalchemy.orm import Session 
 from fastapi.encoders import jsonable_encoder
 
-
 from ..database.models import medicine_model
-
 
 class CRUD_medicine:
     # I set a limit to 100 by default
@@ -36,3 +35,19 @@ class CRUD_medicine:
         dbSession.refresh(med_to_add)
         return new_medicine
         #return "in progress"
+    
+    def patch_medicine(self, medicine_body: medicine_model.medicine, dbSession: Session, id_med: int):
+        med_to_update = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+        print("medicine to update")
+        print(med_to_update)
+        print(med_to_update.id)
+
+        med_to_update.name = medicine_body.name if medicine_body.name != None else med_to_update.name
+        med_to_update.description = medicine_body.description if medicine_body.description != None else med_to_update.description
+        med_to_update.dose = medicine_body.dose if medicine_body.dose != None else med_to_update.dose
+        med_to_update.dose_max = medicine_body.dose_max if medicine_body.dose_max != None else med_to_update.dose_max
+        # d'autre champs a faire
+
+        dbSession.commit()
+        patched = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+        return patched

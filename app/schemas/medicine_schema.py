@@ -14,7 +14,7 @@ class medicinePatch(medicine):
     name: Optional[str]
     dose: Optional[int]
     dose_max: Optional[int]
-    # description: Optional[str]
+    description: Optional[str]
     # is_vaccine: Optional[bool]
     # is_treatment: Optional[bool]
     # danger_level: Optional[int]

@@ -47,10 +47,14 @@ def add_a_medicine(body_medicine: medicine_schema.medicinePost, dbSession: Sessi
 
 # TODO: path
 @medicine_router.patch("/")
-def get_all_medicine(db: Session = Depends(db_dependencies.get_db), limit: int = 10):
-    return { "message": "in progress PATCH medicine"}
+def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
+    print("dans PATCH medicine")
+    print(body_medicine)
+    med = crudMed.patch_medicine(body_medicine, dbSession, body_medicine.id)
+    return med
 
 # TODO: delete
 @medicine_router.delete("/")
-def get_all_medicine(db: Session = Depends(db_dependencies.get_db), limit: int = 10):
+def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
+    med_deleted = crudMed.delete_medicine()
     return { "message": "in progress DELETE medicine"}
