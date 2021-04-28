@@ -26,7 +26,6 @@ def show_treatment_related(*, db: Session = Depends(get_db), pillbox_in: treatme
 
 @treatment_router.post('/updateTreatment', response_model=message.Message)
 def show_treatment_related(*, db: Session = Depends(get_db), treatment_in: treatment_schema.TreatmentBase):
-    print(treatment_in)
     current_treatment = treatment.get(db=db, model_id=treatment_in.id)
 
     if not current_treatment:

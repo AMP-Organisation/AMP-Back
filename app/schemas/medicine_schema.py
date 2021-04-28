@@ -67,3 +67,4 @@ class PrincipleActiveResponse(PrincipleActive):
 class medicineResponse(medicine):
     class Config:
         orm_mode = True
+
