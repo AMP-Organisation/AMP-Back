@@ -51,3 +51,9 @@ class CRUD_medicine:
         dbSession.commit()
         patched = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
         return patched
+
+    def delete_medicine(self, dbSession: Session, id_med: int):
+        elem_to_del = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+        dbSession.delete(elem_to_del)
+        dbSession.commit()
+        return elem_to_del

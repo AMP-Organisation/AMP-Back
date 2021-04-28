@@ -45,7 +45,7 @@ def add_a_medicine(body_medicine: medicine_schema.medicinePost, dbSession: Sessi
     new_med_created = crudMed.add_one_med(body_medicine, dbSession)
     return new_med_created
 
-# TODO: path
+
 @medicine_router.patch("/")
 def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
     print("dans PATCH medicine")
@@ -53,8 +53,12 @@ def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Se
     med = crudMed.patch_medicine(body_medicine, dbSession, body_medicine.id)
     return med
 
-# TODO: delete
+
 @medicine_router.delete("/")
 def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
-    med_deleted = crudMed.delete_medicine()
-    return { "message": "in progress DELETE medicine"}
+    print("le body")
+    print(body_medicine)
+    print(body_medicine.id)
+    elem_deleted = crudMed.delete_medicine(dbSession, body_medicine.id)
+    #elem_deleted = crudBaseOBJMedicine.remove(dbSession, model_id=body_medicine.id)
+    return elem_deleted
