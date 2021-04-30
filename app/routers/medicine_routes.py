@@ -62,3 +62,12 @@ def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Se
     elem_deleted = crudMed.delete_medicine(dbSession, body_medicine.id)
     #elem_deleted = crudBaseOBJMedicine.remove(dbSession, model_id=body_medicine.id)
     return elem_deleted
+
+# cette fonction retourne une liste de string corespondant au type de medoc existant
+@medicine_router.get("/type/{id_med}")
+def get_all_type_medicine(id_med: int, dbSession: Session = Depends(db_dependencies.get_db)):
+    print("In GET type according to ID")
+    print(id_med)
+    list_type = "toto"
+    list_type = crudMed.join_get_type_of_a_medicine(dbSession, id_med)
+    return [ {'id':'toto'}, {'id':'titi'}, {'id':'tyty'}]

@@ -21,7 +21,7 @@ crudBaseOBJ = crud_base.CRUDBase([disease_model.disease, disease_model.disease, 
 def get_all_disease(db: Session = Depends(db_dependencies.get_db), limit: int = 10, id: int = 0):
     print("GET Query to get all the disease, route for disease*")
     if (id == 0):
-        all_disease = crudObjDisease.get_all_disease(db, limit)
+        all_disease = crudObjDisease.get_all_disease(db)
     else :
         all_disease = crudObjDisease.get_one_disease(db, id)
     return all_disease

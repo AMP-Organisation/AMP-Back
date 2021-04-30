@@ -46,6 +46,8 @@ class CRUD_medicine:
         med_to_update.description = medicine_body.description if medicine_body.description != None else med_to_update.description
         med_to_update.dose = medicine_body.dose if medicine_body.dose != None else med_to_update.dose
         med_to_update.dose_max = medicine_body.dose_max if medicine_body.dose_max != None else med_to_update.dose_max
+        med_to_update.delay = medicine_body.delay if medicine_body.delay != None else med_to_update.delay
+
         # d'autre champs a faire
 
         dbSession.commit()
@@ -57,3 +59,19 @@ class CRUD_medicine:
         dbSession.delete(elem_to_del)
         dbSession.commit()
         return elem_to_del
+
+    def join_get_type_of_a_medicine(self, dbSession: Session, id_med: int):
+        print("dans join_get_type_of_a_medicine")
+        # resp = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+        # list_type_medicine = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).join(medicine_model.medecineType).filter(medicine_model.medecineType == medicine_model.medicine.list_type).all()
+        # print(list_type_medicine)
+
+        # 29 avril 
+        # j'essaye de recuperer la liste des tèype de medicament mais sous forme de list de string
+        # et cela avec la liste de type 
+        # Je suis tombé sur cette requete, mais j'ai un probleme avec le unnest array
+        # SELECT t.*
+        # FROM unnest(ARRAY[3,2]) item_id
+        # LEFT JOIN medecine_type t on t.id=item_id
+
+        return "in progress"

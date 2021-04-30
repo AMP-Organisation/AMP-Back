@@ -17,6 +17,7 @@ class disease(disease_base):
     description = Column(String)
     is_vaccine = Column(Boolean)
     symptoms = Column(ARRAY(Integer))
+    scientific_name = Column(String)
 
 
 class disease_more(disease):
