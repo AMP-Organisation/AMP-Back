@@ -31,6 +31,6 @@ class thumbnail(Base):
     img_name = Column(String)
     img_64 = Column(Text)
 
-class medecineType(Base):
+class medecine_type(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True)
     type = Column(String)

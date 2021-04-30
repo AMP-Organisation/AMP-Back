@@ -62,16 +62,12 @@ class CRUD_medicine:
 
     def join_get_type_of_a_medicine(self, dbSession: Session, id_med: int):
         print("dans join_get_type_of_a_medicine")
-        # resp = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+
+        resp = dbSession.query(medicine_model.medicine).get(id_med)
+        print(resp)
+        type_list = [dbSession.query(medicine_model.medecine_type).get(current_id) for current_id in resp.list_type]
         # list_type_medicine = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).join(medicine_model.medecineType).filter(medicine_model.medecineType == medicine_model.medicine.list_type).all()
-        # print(list_type_medicine)
+        print(type_list)
+        print("FIN")
 
-        # 29 avril 
-        # j'essaye de recuperer la liste des tèype de medicament mais sous forme de list de string
-        # et cela avec la liste de type 
-        # Je suis tombé sur cette requete, mais j'ai un probleme avec le unnest array
-        # SELECT t.*
-        # FROM unnest(ARRAY[3,2]) item_id
-        # LEFT JOIN medecine_type t on t.id=item_id
-
-        return "in progress"
+        return type_list

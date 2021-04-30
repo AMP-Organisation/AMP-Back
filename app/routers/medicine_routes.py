@@ -70,4 +70,5 @@ def get_all_type_medicine(id_med: int, dbSession: Session = Depends(db_dependenc
     print(id_med)
     list_type = "toto"
     list_type = crudMed.join_get_type_of_a_medicine(dbSession, id_med)
-    return [ {'id':'toto'}, {'id':'titi'}, {'id':'tyty'}]
+    #return [ {'id':'toto'}, {'id':'titi'}, {'id':'tyty'}]
+    return list_type
