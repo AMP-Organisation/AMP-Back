@@ -1,6 +1,11 @@
 # created by BBR on 13-04-21
 from sqlalchemy.orm import Session 
+from typing import List
 from fastapi.encoders import jsonable_encoder
+from ..crud.crud_base import CRUDBase
+
+from ..database.models.active_ingredient_model import Active_Ingredient
+from ..schemas.medicine_schema import CreatePrincipleActive, UpdatePrincipleActive
 
 from ..database.models import medicine_model
 
@@ -71,3 +76,13 @@ class CRUD_medicine:
         print("FIN")
 
         return type_list
+        
+class CRUDMedicine(CRUDBase[Active_Ingredient, CreatePrincipleActive, UpdatePrincipleActive]):
+
+    def get_all_principle_active(self, db: Session, all_id: List[int]) -> List[Active_Ingredient]:
+        all_active_ingredient = [db.query(self.model).get(current_id) for current_id in all_id]
+        return all_active_ingredient
+    pass
+  
+ 
+medicine = CRUDMedicine(Active_Ingredient)
