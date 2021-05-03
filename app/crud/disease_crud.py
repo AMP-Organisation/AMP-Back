@@ -36,9 +36,18 @@ class CRUD_disease:
 
     # for now, PATCH only work on descriptioon and name
     def patch_a_disease(self, dbSession: Session, data_to_up: disease_model.disease, id_dis: int):
+        # d'abord on recupère la donnée actuelle en base
         dis_to_patch = dbSession.query(disease_model.disease_more).filter(disease_model.disease_more.id == data_to_up.id).first()
+        
+        # je verifie si les infos ont changé par rapport a ce qu'on reçoit
+        # si ce qu'on reçoit est null/vide (None) on en ehcnage rien
         dis_to_patch.name_disease = data_to_up.name if data_to_up.name != None else dis_to_patch.name_disease
         dis_to_patch.description = data_to_up.description if data_to_up.description != None else dis_to_patch.description
+        # is vaccine
+        # isTreatment
+        # scientific name 
+
+        # on commit en base pour prendre la mise a jour
         dbSession.commit()
         patched = dbSession.query(disease_model.disease_more).filter(disease_model.disease_more.id == data_to_up.id).first()
         return patched

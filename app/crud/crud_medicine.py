@@ -1,3 +1,4 @@
+# created by BBR on 13-04-21
 from sqlalchemy.orm import Session 
 from typing import List
 from fastapi.encoders import jsonable_encoder
@@ -7,7 +8,6 @@ from ..database.models.active_ingredient_model import Active_Ingredient
 from ..schemas.medicine_schema import CreatePrincipleActive, UpdatePrincipleActive
 
 from ..database.models import medicine_model
-
 
 class CRUD_medicine:
     # I set a limit to 100 by default
@@ -25,9 +25,6 @@ class CRUD_medicine:
         return resp
 
     def add_one_med(self, new_medicine: medicine_model.medecineShort, dbSession: Session):
-        print("i am adding a new medicine")
-        print(new_medicine)
-        # erreur ici ^^
         med_to_add = medicine_model.medicine()
         med_to_add.name = new_medicine.name
         med_to_add.description = new_medicine.description
@@ -39,7 +36,32 @@ class CRUD_medicine:
         dbSession.commit()
         dbSession.refresh(med_to_add)
         return new_medicine
-        #return "in progress"
+    
+    def patch_medicine(self, medicine_body: medicine_model.medicine, dbSession: Session, id_med: int):
+        med_to_update = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+
+        med_to_update.name = medicine_body.name if medicine_body.name != None else med_to_update.name
+        med_to_update.description = medicine_body.description if medicine_body.description != None else med_to_update.description
+        med_to_update.dose = medicine_body.dose if medicine_body.dose != None else med_to_update.dose
+        med_to_update.dose_max = medicine_body.dose_max if medicine_body.dose_max != None else med_to_update.dose_max
+        med_to_update.delay = medicine_body.delay if medicine_body.delay != None else med_to_update.delay
+
+        dbSession.commit()
+        patched = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+        return patched
+
+    def delete_medicine(self, dbSession: Session, id_med: int):
+        elem_to_del = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
+        dbSession.delete(elem_to_del)
+        dbSession.commit()
+        return elem_to_del
+
+    def join_get_type_of_a_medicine(self, dbSession: Session, id_med: int):
+        resp = dbSession.query(medicine_model.medicine).get(id_med)
+
+        type_list = [dbSession.query(medicine_model.medecine_type).get(current_id) for current_id in resp.list_type]
+        
+        return type_list
         
 class CRUDMedicine(CRUDBase[Active_Ingredient, CreatePrincipleActive, UpdatePrincipleActive]):
 
