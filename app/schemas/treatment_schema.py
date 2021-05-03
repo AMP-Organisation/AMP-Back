@@ -10,6 +10,7 @@ class TreatmentBase(BaseModel):
     medicine_id: Optional[List[int]]
     beginning_date: Optional[datetime.datetime]
     ending_date: Optional[datetime.datetime]
+    user_id: Optional[int]
 
 
 class CreateTreatment(TreatmentBase):

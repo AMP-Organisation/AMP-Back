@@ -29,7 +29,14 @@ class CRUDTreatment(CRUDBase[Treatment, CreateTreatment, UpdateTreatment]):
         treatment = db.query(self.model).get(current_treatment)
         all_medicine = [db.query(medicine).get(medicine_id) for medicine_id in treatment.medicine_id]
         return all_medicine
-    pass
+
+    def verify_name(self, db:Session, user_id: int, name: str) -> bool:
+        check_treatement = db.query(self.model).filter_by(user_id=user_id).all()
+        result = False
+        for user_treatment in check_treatement:
+            if user_treatment.name is name:
+                result = True
+        return result
 
 
 treatment = CRUDTreatment(Treatment)
