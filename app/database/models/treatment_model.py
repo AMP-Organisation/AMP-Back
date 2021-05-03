@@ -9,3 +9,4 @@ class Treatment(Base):
     medicine_id = Column(ARRAY(Integer))
     beginning_date = Column(TIMESTAMP, nullable=False)
     ending_date = Column(TIMESTAMP)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
