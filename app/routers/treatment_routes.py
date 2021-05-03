@@ -70,6 +70,21 @@ def get_user_treatments(user_id: int, db: Session = Depends(get_db)):
 
 
 @treatment_router.post('/medicineRelated', response_model=List[medicine_schema.medicineResponse])
-def show_all_medicine_related(*, db: Session = Depends(get_db), pillbox_in: treatment_schema.GetTreatment):
-    all_medicine_related = treatment.related_medicine(db, pillbox_in.current_treatment)
+def show_all_medicine_related(*, db: Session = Depends(get_db), treatment_in: treatment_schema.GetTreatment):
+    all_medicine_related = treatment.related_medicine(db, treatment_in.current_treatment)
     return all_medicine_related
+
+
+@treatment_router.post('/deleteMedicine', response_model=message.Message)
+def delete_medicine(*, db: Session = Depends(get_db), treatment_in: treatment_schema.DeleteMedicineFromTreatment):
+    current_treatment = treatment.get(db=db, model_id=treatment_in.id)
+
+    if not current_treatment:
+        if not current_treatment:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="The treatment do not exist in the system."
+            )
+
+    treatment.remove_medicine(db=db, medicine_id=treatment_in.medicine_id, treatment_obj=current_treatment)
+    return {"message": "Traitement mis à jour"}

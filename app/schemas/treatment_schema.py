@@ -33,6 +33,11 @@ class UpdateTreatment(TreatmentBase):
     id: int
 
 
+class DeleteMedicineFromTreatment(BaseModel):
+    id: int
+    medicine_id: int
+
+
 class TreatmentResponse(TreatmentBase):
     class Config:
         orm_mode = True
