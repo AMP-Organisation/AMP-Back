@@ -20,10 +20,12 @@ def get_all_medicine(db: Session = Depends(db_dependencies.get_db), limit: int =
     allMedi = crudMed.get_all_medicine(db)
     return allMedi
 
+
 @medicine_router_bis.get("/thumbnail/{id_thumb}")
 def get_all_thumbnail(id_thumb: int, db: Session = Depends(db_dependencies.get_db), limit: int = 10):
     oneThumbnail = crudMed.get_one_thumbnail(db, id_thumb)
     return oneThumbnail
+
 
 @medicine_router_bis.get("/thumbnail")
 def get_all_thumbnail(db: Session = Depends(db_dependencies.get_db), limit: int = 10):
@@ -44,19 +46,21 @@ def add_a_medicine(body_medicine: medicine_schema.medicinePost, dbSession: Sessi
 
 
 @medicine_router_bis.patch("/")
-def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
+def get_all_medicine(body_medicine: medicine_schema.medicinePatch,
+                     dbSession: Session = Depends(db_dependencies.get_db)):
     med = crudMed.patch_medicine(body_medicine, dbSession, body_medicine.id)
     return med
 
 
 @medicine_router_bis.delete("/")
-def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
+def get_all_medicine(body_medicine: medicine_schema.medicinePatch,
+                     dbSession: Session = Depends(db_dependencies.get_db)):
     elem_deleted = crudMed.delete_medicine(dbSession, body_medicine.id)
     return elem_deleted
+
 
 # cette fonction retourne une liste de string corespondant au type de medoc existant
 @medicine_router_bis.get("/type/{id_med}")
 def get_all_type_medicine(id_med: int, dbSession: Session = Depends(db_dependencies.get_db)):
-    list_type = "toto"
     list_type = crudMed.join_get_type_of_a_medicine(dbSession, id_med)
     return list_type
