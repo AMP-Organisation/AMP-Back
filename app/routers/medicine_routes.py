@@ -46,7 +46,7 @@ def add_a_medicine(body_medicine: medicine_schema.medicinePost, dbSession: Sessi
     return new_med_created
 
 
-@medicine_router.patch("/")
+@medicine_router_bis.patch("/")
 def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
     print("dans PATCH medicine")
     print(body_medicine)
@@ -54,7 +54,7 @@ def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Se
     return med
 
 
-@medicine_router.delete("/")
+@medicine_router_bis.delete("/")
 def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Session = Depends(db_dependencies.get_db)):
     print("le body")
     print(body_medicine)
@@ -64,7 +64,7 @@ def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Se
     return elem_deleted
 
 # cette fonction retourne une liste de string corespondant au type de medoc existant
-@medicine_router.get("/type/{id_med}")
+@medicine_router_bis.get("/type/{id_med}")
 def get_all_type_medicine(id_med: int, dbSession: Session = Depends(db_dependencies.get_db)):
     print("In GET type according to ID")
     print(id_med)
