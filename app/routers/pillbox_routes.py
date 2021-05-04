@@ -18,7 +18,7 @@ def show_relation(*, db: Session = Depends(get_db), pillbox_in: pillbox_schema.G
     return pillbox_found
 
 
-@pillbox_router.post('/updatePillbox', response_model=message.Message)
+@pillbox_router.put('/updatePillbox', response_model=message.Message)
 def update_pillbox(*, db: Session = Depends(get_db), pillbox_in: pillbox_schema.UpdatePillbox):
     pillbox_found = pillbox.get(db=db, model_id=pillbox_in.id)
     pillbox.addTreatment(db=db, updated_pillbox=pillbox_in, ori_pillbox=pillbox_found)

@@ -24,7 +24,7 @@ def show_treatment_related(*, db: Session = Depends(get_db), pillbox_in: treatme
     return all_treatment_related
 
 
-@treatment_router.post('/updateTreatment', response_model=message.Message)
+@treatment_router.put('/updateTreatment', response_model=message.Message)
 def update_treatment(*, db: Session = Depends(get_db), treatment_in: treatment_schema.TreatmentBase):
     current_treatment = treatment.get(db=db, model_id=treatment_in.id)
 
@@ -75,7 +75,7 @@ def show_all_medicine_related(*, db: Session = Depends(get_db), treatment_in: tr
     return all_medicine_related
 
 
-@treatment_router.post('/deleteMedicine', response_model=message.Message)
+@treatment_router.delete('/deleteMedicine', response_model=message.Message)
 def delete_medicine(*, db: Session = Depends(get_db), treatment_in: treatment_schema.DeleteMedicineFromTreatment):
     current_treatment = treatment.get(db=db, model_id=treatment_in.id)
 
