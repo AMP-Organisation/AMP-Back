@@ -57,6 +57,5 @@ def get_all_medicine(body_medicine: medicine_schema.medicinePatch, dbSession: Se
 # cette fonction retourne une liste de string corespondant au type de medoc existant
 @medicine_router_bis.get("/type/{id_med}")
 def get_all_type_medicine(id_med: int, dbSession: Session = Depends(db_dependencies.get_db)):
-    list_type = "toto"
     list_type = crudMed.join_get_type_of_a_medicine(dbSession, id_med)
     return list_type
