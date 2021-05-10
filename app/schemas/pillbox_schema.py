@@ -18,11 +18,16 @@ class CreatePillbox(PillboxBase):
     description: str
     list_treatment: List[int]
     beginning_date: datetime.datetime
-    ending_date: datetime.datetime
 
 
 class UpdatePillbox(PillboxBase):
     id: int
+    name: Optional[str]
+    description: Optional[str]
+    beginning_date: Optional[datetime.datetime]
+    ending_date: Optional[datetime.datetime]
+    list_treatment: Optional[int]
+    user_id: Optional[str]
 
 
 class GetUserPillbox(BaseModel):
