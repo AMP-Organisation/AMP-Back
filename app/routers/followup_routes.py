@@ -18,11 +18,18 @@ crud_obj_imc = crud_imc.CRUD_IMC()
 
 # attention la j'ai précisé /imc ce qui donne comme route /followup/imc
 # comme ca on pourra avoir d'autre route followup/toto 
+@follow_up_router.get("/imc/{id_user}")
+def get_all_data(id_user: int, db_session: Session = Depends(db_dependencies.get_db), limit: int = 365):
+    print("GET avec id")
+    print(id_user)
+    all_data = crud_obj_imc.get_all_data_from_one_user(db_session, limit, id_user)
+    return all_data
+
 @follow_up_router.get("/imc")
 def get_all_data(db_session: Session = Depends(db_dependencies.get_db), limit: int = 365, id: int = 0):
     print("GET ")
     all_data = crud_obj_imc.get_all_data(db_session, limit)
-    return "in progress"
+    return all_data
 
 @follow_up_router.post("/imc")
 def add_new_imc_data(body_followup_imc: followup_schema.followup_imc, \

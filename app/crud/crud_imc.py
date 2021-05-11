@@ -14,6 +14,9 @@ class CRUD_IMC:
     def get_all_data(self, dbSession: Session, limit: int):
         return dbSession.query(followup_model.imc_suivi).limit(limit).all()
 
+    def get_all_data_from_one_user(self, dbSession: Session, limit: int, id_user: int):
+        return dbSession.query(followup_model.imc_suivi).filter(followup_model.imc_suivi.user_id == id_user).limit(limit).all()
+
 
     def get_one_item(self, dbSession: Session, id_to_find: int):
         return dbSession.query(followup_model.imc_suivi).filter(followup_model.imc_suivi.id == id_to_find)
