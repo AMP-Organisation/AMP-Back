@@ -1,5 +1,5 @@
 # created by BBR on 13-04-21
-from sqlalchemy.orm import Session 
+from sqlalchemy.orm import Session
 from typing import List
 from fastapi.encoders import jsonable_encoder
 from ..crud.crud_base import CRUDBase
@@ -8,6 +8,7 @@ from ..database.models.active_ingredient_model import Active_Ingredient
 from ..schemas.medicine_schema import CreatePrincipleActive, UpdatePrincipleActive
 
 from ..database.models import medicine_model
+
 
 class CRUD_medicine:
     # I set a limit to 100 by default
@@ -36,7 +37,7 @@ class CRUD_medicine:
         dbSession.commit()
         dbSession.refresh(med_to_add)
         return new_medicine
-    
+
     def patch_medicine(self, medicine_body: medicine_model.medicine, dbSession: Session, id_med: int):
         med_to_update = dbSession.query(medicine_model.medicine).filter(medicine_model.medicine.id == id_med).first()
 
@@ -60,15 +61,17 @@ class CRUD_medicine:
         resp = dbSession.query(medicine_model.medicine).get(id_med)
 
         type_list = [dbSession.query(medicine_model.medecine_type).get(current_id) for current_id in resp.list_type]
-        
+
         return type_list
-        
+
+
 class CRUDMedicine(CRUDBase[Active_Ingredient, CreatePrincipleActive, UpdatePrincipleActive]):
 
     def get_all_principle_active(self, db: Session, all_id: List[int]) -> List[Active_Ingredient]:
         all_active_ingredient = [db.query(self.model).get(current_id) for current_id in all_id]
         return all_active_ingredient
+
     pass
-  
- 
+
+
 medicine = CRUDMedicine(Active_Ingredient)

@@ -14,7 +14,7 @@ health_card_router = APIRouter(
 
 
 @health_card_router.post('/', response_model=health_card_schema.HealthCardResponse)
-def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_card_schema.GetHealthCard) -> health_card:
+def get_health_card_user(*, db: Session = Depends(get_db), health_card_in: health_card_schema.GetHealthCard) -> health_card:
     current_user = crud_health_card.get_by_user(db, health_card_in.user_id)
     if not current_user:
         raise HTTPException(
@@ -25,7 +25,7 @@ def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_ca
 
 
 @health_card_router.delete('/deleteInformations', response_model=message.Message)
-def user_health_card(*, db: Session = Depends(get_db), health_card_in: health_card_schema.GetHealthCard) -> Dict[
+def delete_health_card(*, db: Session = Depends(get_db), health_card_in: health_card_schema.GetHealthCard) -> Dict[
     str, str]:
     print(health_card_in)
     current_user = crud_health_card.get_by_user(db, user_id=health_card_in.user_id)
