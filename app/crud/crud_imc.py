@@ -1,5 +1,6 @@
 # created by BBR on 10-05-21
 from sqlalchemy.orm import Session 
+from sqlalchemy.sql import func
 from typing import List
 from fastapi.encoders import jsonable_encoder
 from ..crud.crud_base import CRUDBase
@@ -22,7 +23,17 @@ class CRUD_IMC:
         timeD = timedelta(days=nbDay)
         today = date.today()
         antes = date.today() - timeD
+        
         last_week = dbSession.query(followup_model.imc_suivi).filter(followup_model.imc_suivi.user_id == id_user).filter(followup_model.imc_suivi.date.between(antes, today)).order_by(followup_model.imc_suivi.date.desc()).all()
+        # print("le for de la period")
+        # for i in last_week:
+        #     print(i)
+
+        # average_today = dbSession.query(func.avg(followup_model.imc_suivi.imc_computed)).filter(followup_model.imc_suivi.user_id == 12).group_by(followup_model.imc_suivi.date)
+        # print(average_today)
+        # faire de cette maniere
+        # period = [dbSession.(query).fileter(for jour in last_week)]
+
         return last_week
 
     def get_one_item(self, dbSession: Session, id_to_find: int):

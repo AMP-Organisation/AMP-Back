@@ -18,7 +18,7 @@ crud_obj_imc = crud_imc.CRUD_IMC()
 
 @follow_up_router.get("/imc/period")
 def get_on_period_data(response: Response, db_session: Session = Depends(db_dependencies.get_db), id_user: int = 0, duration: int = 7):
-    print("GET period")
+    print("GET period t")
     print(id_user)
     print(duration)
     if id_user == 0:
