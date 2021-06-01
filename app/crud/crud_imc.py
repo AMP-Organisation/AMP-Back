@@ -1,6 +1,6 @@
 # created by BBR on 10-05-21
 from sqlalchemy.orm import Session 
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, and_
 from typing import List
 from fastapi.encoders import jsonable_encoder
 from ..crud.crud_base import CRUDBase
@@ -8,6 +8,8 @@ from ..schemas.followup_schema import followup_imc
 
 from ..database.models import followup_model
 from datetime import date, datetime, timedelta
+
+from  pprint import pprint
 
 # étant donné que pourrait avoir plusieurs suivi, est ce qu'on fait un ensemble 
 # (crud, schema et mode) pour chaque type de suivi ou un ensemble qui prend tout
@@ -21,13 +23,42 @@ class CRUD_IMC:
 
     def get_data_period(self, dbSession: Session, id_user: int, nbDay: int):
         timeD = timedelta(days=nbDay)
-        today = date.today()
+        today = date.today() + timedelta(days=1)
         antes = date.today() - timeD
-        
+        print("dans le get data period")
+        print(today)
+        print(antes)
         last_week = dbSession.query(followup_model.imc_suivi).filter(followup_model.imc_suivi.user_id == id_user).filter(followup_model.imc_suivi.date.between(antes, today)).order_by(followup_model.imc_suivi.date.desc()).all()
-        # print("le for de la period")
-        # for i in last_week:
-        #     print(i)
+        print("le for de la period")
+        for i in last_week:
+            print(i.date)
+
+        vingtcinq = datetime(2021, 5, 25)
+        vingtcinqBis = datetime(2021, 5, 25, 23, 59)
+        
+        avg_on_day = dbSession.query(func.avg(followup_model.imc_suivi.imc_computed), func.avg(followup_model.imc_suivi.weight)).filter(and_(followup_model.imc_suivi.user_id == 12, followup_model.imc_suivi.date.between(vingtcinq, vingtcinqBis))).first()
+        print("moyenne pour le 25 MAI")
+        print(avg_on_day[0])
+        pprint(avg_on_day)
+        i = 0
+        res = []
+        beginDay = date.today() 
+        minuit = datetime(today.year, today.month, today.day, 23, 59, 59)
+        print(beginDay)
+        print(minuit)
+        avg_on_day = dbSession.query(func.avg(followup_model.imc_suivi.imc_computed), func.avg(followup_model.imc_suivi.weight)).filter(and_(followup_model.imc_suivi.user_id == 12, followup_model.imc_suivi.date.between(beginDay, minuit))).first()
+        print("moyenne pour le aujourd'hui")
+        print(avg_on_day[0])
+        pprint(avg_on_day)
+        while i < nbDay:
+            beginDay = beginDay - timedelta(days=1)
+            minuit = minuit - timedelta(days=1)
+            print("moyenne de : ")
+            print(beginDay)
+            avg_on_day = dbSession.query(func.avg(followup_model.imc_suivi.imc_computed), func.avg(followup_model.imc_suivi.weight)).filter(and_(followup_model.imc_suivi.user_id == 12, followup_model.imc_suivi.date.between(beginDay, minuit))).first()
+            res.append({"date": beginDay, "avg_weight": avg_on_day[1], "avg_imc": avg_on_day[0]})
+            i += 1
+        pprint(res)
 
         # average_today = dbSession.query(func.avg(followup_model.imc_suivi.imc_computed)).filter(followup_model.imc_suivi.user_id == 12).group_by(followup_model.imc_suivi.date)
         # print(average_today)
