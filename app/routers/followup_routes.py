@@ -80,6 +80,10 @@ def add_new_imc_data(body_followup_imc: followup_schema.followup_imc, \
     print(body_followup_imc)
     new_elem = None
     dbSession = db_session
+    print(body_followup_imc.date)
+    print(body_followup_imc.date.day)
+    print(body_followup_imc.date.month)
+    print(body_followup_imc.date.year)
     new_elem = crud_obj_imc.add_one_elem(body_followup_imc, dbSession)
     return new_elem
 

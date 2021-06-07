@@ -25,6 +25,8 @@ class CRUD_IMC:
         timeD = timedelta(days=nbDay)
         today = date.today() + timedelta(days=1)
         antes = date.today() - timeD
+        print("id user : ", end="")
+        print(id_user)
         print("dans le get data period")
         print(today)
         print(antes)
@@ -74,11 +76,21 @@ class CRUD_IMC:
     def add_one_elem(self, body_followup_imc: followup_imc, dbSession: Session):
         if Session == None:
             return 'Null'
+        print("la ici")
+        print(body_followup_imc.date)
+        print(body_followup_imc.date.day)
+        print(body_followup_imc.date.month)
+        print(body_followup_imc.date.year)
+
         newData = followup_model.imc_suivi()
         newData.user_id = body_followup_imc.id_user
         newData.imc_computed = body_followup_imc.imc
         newData.weight = body_followup_imc.weight
         newData.date = body_followup_imc.date
+        # il ne veut pppas me rajouter ces données ci ... 
+        newData.day = body_followup_imc.date.day
+        newData.month = body_followup_imc.date.month
+        newData.year = body_followup_imc.date.year
 
         dbSession.add(newData)
         dbSession.commit()

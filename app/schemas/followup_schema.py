@@ -17,3 +17,6 @@ class followup_imc(followupBase):
     weight: int
     imc: int
     date: datetime.datetime
+    day: Optional[int]
+    month: Optional[int]
+    year: Optional[int]
