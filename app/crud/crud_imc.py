@@ -24,23 +24,14 @@ class CRUD_IMC:
     def get_data_period(self, dbSession: Session, id_user: int, nbDay: int):
         timeD = timedelta(days=nbDay)
         today = date.today() + timedelta(days=1)
-        antes = date.today() - timeD
-        print("id user : ", end="")
-        print(id_user)
-        print("dans le get data period")
-        print(today)
-        print(antes)
-
-        last_week = dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).filter(followup_model.imc_follow_up.date.between(antes, today)).order_by(followup_model.imc_follow_up.date.desc()).all()
-        print("le for de la period")
-        for i in last_week:
-            print(i.date)
-            print(i.imc_computed)
-
+        before = date.today() - timeD
+        
+        last_week = dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).filter(followup_model.imc_follow_up.date.between(before, today)).order_by(followup_model.imc_follow_up.date.desc()).all()
 
         #
         # WIP 
         # I am refactoring
+        # 
         # new version
         # vingtcinq = datetime(2021, 5, 25)
         # vingtcinqBis = datetime(2021, 5, 25, 23, 59)
@@ -83,18 +74,13 @@ class CRUD_IMC:
     def add_one_elem(self, body_followup_imc: followup_imc, dbSession: Session):
         if Session == None:
             return 'Null'
-        print("la ici")
-        print(body_followup_imc.date)
-        print(body_followup_imc.date.day)
-        print(body_followup_imc.date.month)
-        print(body_followup_imc.date.year)
 
         newData = followup_model.imc_follow_up()
         newData.user_id = body_followup_imc.id_user
         newData.imc_computed = body_followup_imc.imc
         newData.weight = body_followup_imc.weight
         newData.date = body_followup_imc.date
-        # il ne veut pppas me rajouter ces données ci ... 
+        # problems : some date seem not to be added
         newData.day = body_followup_imc.date.day
         newData.month = body_followup_imc.date.month
         newData.year = body_followup_imc.date.year
