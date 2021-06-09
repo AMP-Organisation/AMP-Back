@@ -25,7 +25,7 @@ class CRUD_IMC:
         timeD = timedelta(days=nbDay)
         today = date.today() + timedelta(days=1)
         before = date.today() - timeD
-        
+
         last_week = dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).filter(followup_model.imc_follow_up.date.between(before, today)).order_by(followup_model.imc_follow_up.date.desc()).all()
 
         #
@@ -70,11 +70,15 @@ class CRUD_IMC:
     def get_one_item(self, dbSession: Session, id_to_find: int):
         return dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.id == id_to_find)
 
+    def get_last_imc_data(self, dbSession: Session, id_user: int):
+        return dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).order_by(followup_model.imc_follow_up.date.desc()).first()
 
     def add_one_elem(self, body_followup_imc: followup_imc, dbSession: Session):
         if Session == None:
             return 'Null'
 
+        print("dans add one element")
+        print(body_followup_imc)
         newData = followup_model.imc_follow_up()
         newData.user_id = body_followup_imc.id_user
         newData.imc_computed = body_followup_imc.imc

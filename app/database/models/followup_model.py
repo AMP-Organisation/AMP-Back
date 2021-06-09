@@ -12,3 +12,6 @@ class imc_follow_up(Base):
     weight = Column(Integer)
     date = Column(TIMESTAMP, nullable=False)
     imc_computed = Column(Integer)
+    day = Column(Integer)
+    month = Column(Integer)
+    year = Column(Integer)

@@ -61,9 +61,16 @@ def get_last_month_data(id_user: int, db_session: Session = Depends(db_dependenc
     return crud_obj_imc.get_data_period(db_session, id_user, 31)
 
 
+@follow_up_router.get("/imc/last/{id_user}")
+def get_last_month_data(id_user: int, db_session: Session = Depends(db_dependencies.get_db)):
+    return crud_obj_imc.get_last_imc_data(db_session, id_user)
+
+
 @follow_up_router.post("/imc")
 def add_new_imc_data(body_followup_imc: followup_schema.followup_imc, \
         db_session: Session = Depends(db_dependencies.get_db), ):
+    print("dans le POST /imc")
+    print(body_followup_imc)
     new_elem = None
     dbSession = db_session
     new_elem = crud_obj_imc.add_one_elem(body_followup_imc, dbSession)
