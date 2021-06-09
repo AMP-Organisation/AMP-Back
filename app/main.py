@@ -11,13 +11,14 @@ from .routers.treatment_routes import treatment_router
 from fastapi.middleware.cors import CORSMiddleware
 from .routers.medicine_routes import medicine_router_bis
 from .routers.medicine_route import medicine_router
+from .routers.followup_routes import follow_up_router
 app = FastAPI()
 
 app.include_router(user_router, prefix=settings.API_V1_STR)
 app.include_router(login_router, prefix=settings.API_V1_STR)
 app.include_router(place_router, prefix=settings.API_V1_STR)
 app.include_router(diseases_routes.diseases_router, prefix=settings.API_V1_STR)  # peut etre changer l'import. faudra
-# rajouter le prefix
+
 app.include_router(symptoms_router, prefix=settings.API_V1_STR)
 app.include_router(medicine_router, prefix=settings.API_V1_STR)
 app.include_router(medicine_router_bis, prefix=settings.API_V1_STR)
@@ -26,6 +27,7 @@ app.include_router(health_card_router, prefix=settings.API_V1_STR)
 app.include_router(pillbox_router, prefix=settings.API_V1_STR)
 app.include_router(treatment_router, prefix=settings.API_V1_STR)
 
+app.include_router(follow_up_router, prefix=settings.API_V1_STR)
 
 # CORS policies
 origins = [
