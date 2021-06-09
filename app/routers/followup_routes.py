@@ -25,6 +25,14 @@ def get_on_period_data(response: Response, db_session: Session = Depends(db_depe
     return on_duration
 
 
+@follow_up_router.get("/imc/periodbis")
+def get_on_period_data(response: Response, db_session: Session = Depends(db_dependencies.get_db), id_user: int = 0, duration: int = 7):
+    if id_user == 0:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return "missing id_user in query"
+    on_duration = crud_obj_imc.get_data_period_bis(db_session, id_user, duration)
+    return on_duration
+
 
 # attention la j'ai précisé /imc ce qui donne comme route /followup/imc
 # comme ca on pourra avoir d'autre route followup/toto 
