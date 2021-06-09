@@ -21,6 +21,8 @@ class CRUD_IMC:
     def get_all_data_from_one_user(self, dbSession: Session, limit: int, id_user: int):
         return dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).order_by(followup_model.imc_follow_up.date.desc()).limit(limit).all()
 
+    # to keep
+    # get all data for each day but with several data if there are for a day
     def get_data_period(self, dbSession: Session, id_user: int, nbDay: int):
         timeD = timedelta(days=nbDay)
         today = date.today() + timedelta(days=1)
@@ -31,7 +33,23 @@ class CRUD_IMC:
         return last_period
 
 
-    def get_data_period_bis(self, dbSession: Session, id_user: int, nbDay: int):
+    def replaceNoneVal(self, tab):
+        oldWeight = None
+        oldImc = None
+        print('replaceNone value')
+        for i in tab:
+            print(i)
+            if i['weight'] == None or i['imc_computed']  == None:
+                i['weight'] = oldWeight 
+                i['imc_computed'] = oldImc
+                i['is_fake'] = True
+            else:
+                oldWeight = i['weight']
+                oldImc = i['imc_computed'] 
+        return tab
+
+    # get all data for each day but with ONLY ONE for each day : it compute an average
+    def get_data_period_average(self, dbSession: Session, id_user: int, nbDay: int):
         #
         # WIP 
         # I am refactoring
@@ -60,18 +78,37 @@ class CRUD_IMC:
         while i < nbDay:
             theDate = date.today() - timedelta(days=i+1)
             avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == theDate.year, followup_model.imc_follow_up.month == theDate.month, followup_model.imc_follow_up.day == theDate.day)).all()
-            res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_day[0][0], 2), "weight": round(avg_on_day[0][1], 2)})
+            if avg_on_day[0][0] == None:
+                res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":None, "weight": None})
+            else:
+                 res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_day[0][0], 2), "weight": round(avg_on_day[0][1], 2)})
             i += 1
         print(res)
         
         # TODO : improvment
         # faire une fonction qui remplace les eventuelle valeur manquante par des moyennes ()
-
+        res = self.replaceNoneVal(res)
         return res
 
         # faire de cette maniere
         # period = [dbSession.(query).fileter(for jour in last_week)]
         # return "in preogress bis"
+
+    # get all data for each month but with ONLY ONE for each day : it compute an average
+    def get_data_period_month_average(self, dbSession: Session, id_user: int, nbMonth: int):
+        i = 0
+        res = []
+        while i < nbMonth:
+            theDate = date.today() - timedelta(days=i*30)
+            avg_on_month = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == theDate.year, followup_model.imc_follow_up.month == theDate.month)).all()
+            if avg_on_month[0][0] == None:
+                res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed": 0, "weight": 0})
+            else:
+                 res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_month[0][0], 2), "weight": round(avg_on_month[0][1], 2)})
+            i += 1
+        print(res)
+        # faire une fonction pour les mois d'avant ?
+        return res
 
 
     def get_one_item(self, dbSession: Session, id_to_find: int):

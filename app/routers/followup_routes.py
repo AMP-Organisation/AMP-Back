@@ -25,12 +25,21 @@ def get_on_period_data(response: Response, db_session: Session = Depends(db_depe
     return on_duration
 
 
-@follow_up_router.get("/imc/periodbis")
+@follow_up_router.get("/imc/periodavg")
 def get_on_period_data(response: Response, db_session: Session = Depends(db_dependencies.get_db), id_user: int = 0, duration: int = 7):
     if id_user == 0:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return "missing id_user in query"
-    on_duration = crud_obj_imc.get_data_period_bis(db_session, id_user, duration)
+    on_duration = crud_obj_imc.get_data_period_average(db_session, id_user, duration)
+    return on_duration
+
+
+@follow_up_router.get("/imc/periodmonthavg")
+def get_on_period_data(response: Response, db_session: Session = Depends(db_dependencies.get_db), id_user: int = 0, duration: int = 6):
+    if id_user == 0:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return "missing id_user in query"
+    on_duration = crud_obj_imc.get_data_period_month_average(db_session, id_user, duration)
     return on_duration
 
 
@@ -53,22 +62,30 @@ def get_all_data(db_session: Session = Depends(db_dependencies.get_db), limit: i
 # sur 7 jour pour une semaine
 @follow_up_router.get("/imc/lastweek/{id_user}")
 def get_last_week_data(id_user: int, db_session: Session = Depends(db_dependencies.get_db)):
-    last_week_data = crud_obj_imc.get_data_period(db_session, id_user, 7)
+    last_week_data = crud_obj_imc.get_data_period_average(db_session, id_user, 7)
     return last_week_data
 
 
-# sur 365 jours
+# sur 12 MOIS 
+@follow_up_router.get("/imc/lastsemester/{id_user}")
+def get_last_year_data(id_user: int, db_session: Session = Depends(db_dependencies.get_db)):
+    return crud_obj_imc.get_data_period_month_average(db_session, id_user, 6)
+
+
+# sur 12 MOIS 
 @follow_up_router.get("/imc/lastyear/{id_user}")
 def get_last_year_data(id_user: int, db_session: Session = Depends(db_dependencies.get_db)):
-    return crud_obj_imc.get_data_period(db_session, id_user, 365)
+    return crud_obj_imc.get_data_period_month_average(db_session, id_user, 12)
 
 
 #sur 31 jour pour un mois
 @follow_up_router.get("/imc/lastmonth/{id_user}")
 def get_last_month_data(id_user: int, db_session: Session = Depends(db_dependencies.get_db)):
-    return crud_obj_imc.get_data_period(db_session, id_user, 31)
+    return crud_obj_imc.get_data_period_average(db_session, id_user, 31)
 
 
+
+# to get the last data record
 @follow_up_router.get("/imc/last/{id_user}")
 def get_last_month_data(id_user: int, db_session: Session = Depends(db_dependencies.get_db)):
     return crud_obj_imc.get_last_imc_data(db_session, id_user)
