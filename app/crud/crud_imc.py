@@ -36,9 +36,7 @@ class CRUD_IMC:
     def replaceNoneVal(self, tab):
         oldWeight = None
         oldImc = None
-        print('replaceNone value')
         for i in tab:
-            print(i)
             if i['weight'] == None or i['imc_computed']  == None:
                 i['weight'] = oldWeight 
                 i['imc_computed'] = oldImc
@@ -50,52 +48,24 @@ class CRUD_IMC:
 
     # get all data for each day but with ONLY ONE for each day : it compute an average
     def get_data_period_average(self, dbSession: Session, id_user: int, nbDay: int):
-        #
-        # WIP 
-        # I am refactoring
-        # 
-        # new version
-        # today = date.today() + timedelta(days=1)
         befor = date.today() -  timedelta(days=nbDay-1)
-        vingtcinq = datetime(2021, 5, 25)
-        vingtcinqBis = datetime(2021, 5, 25, 23, 59)
-        today = vingtcinq
-
-        print(today)
-        print(today.day)
-        print(today.month)
-        print(today.year)
-        # avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight))\
-        #     .filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.day == today.day, followup_model.imc_follow_up.month == today.month, followup_model.imc_follow_up.year == today.day))\
-        #     .all()
-        avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == today.year, followup_model.imc_follow_up.month == today.month, followup_model.imc_follow_up.day == today.day)).all()
-        print("moyenne pour le 25 MAI")
-        print(avg_on_day)
-        pprint(avg_on_day)
 
         i = 0
         res = []
         while i < nbDay:
             theDate = date.today() - timedelta(days=i+1)
-            print("the date")
-            print(theDate)
             avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == theDate.year, followup_model.imc_follow_up.month == theDate.month, followup_model.imc_follow_up.day == theDate.day)).all()
-            print(avg_on_day)
             if avg_on_day[0][0] == None:
                 res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":None, "weight": None})
             else:
                  res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_day[0][0], 2), "weight": round(avg_on_day[0][1], 2)})
             i += 1
-        print(res)
         
         # TODO : improvment
         # faire une fonction qui remplace les eventuelle valeur manquante par des moyennes ()
         res = self.replaceNoneVal(res)
         return res
 
-        # faire de cette maniere
-        # period = [dbSession.(query).fileter(for jour in last_week)]
-        # return "in preogress bis"
 
     # get all data for each month but with ONLY ONE for each day : it compute an average
     def get_data_period_month_average(self, dbSession: Session, id_user: int, nbMonth: int):
@@ -109,7 +79,7 @@ class CRUD_IMC:
             else:
                  res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_month[0][0], 2), "weight": round(avg_on_month[0][1], 2)})
             i += 1
-        print(res)
+
         # faire une fonction pour les mois d'avant ?
         return res
 
@@ -124,14 +94,11 @@ class CRUD_IMC:
         if Session == None:
             return 'Null'
 
-        print("dans add one element")
-        print(body_followup_imc)
         newData = followup_model.imc_follow_up()
         newData.user_id = body_followup_imc.id_user
         newData.imc_computed = body_followup_imc.imc
         newData.weight = body_followup_imc.weight
         newData.date = body_followup_imc.date
-        # problems : some date seem not to be added
         newData.day = body_followup_imc.date.day
         newData.month = body_followup_imc.date.month
         newData.year = body_followup_imc.date.year
