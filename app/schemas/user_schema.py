@@ -11,6 +11,7 @@ class UserBase(BaseModel):
     email: Optional[str]
     username: Optional[str]
     age: Optional[int]
+    height: Optional[float]
 
 
 class CreateUser(UserBase):

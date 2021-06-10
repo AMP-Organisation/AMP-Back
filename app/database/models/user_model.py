@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, VARCHAR, TIMESTAMP, ForeignKey
+from sqlalchemy import Column, Integer, VARCHAR, TIMESTAMP, ForeignKey, Float
 from ..base_class import Base
 
 
@@ -17,6 +17,7 @@ class Users(Base):
     last_login = Column(TIMESTAMP)
     password = Column(VARCHAR(100), unique=True)
     fk_group = Column(Integer, ForeignKey('group.id'))
+    height = Column(Float)
 
 
 class Group(Base):
