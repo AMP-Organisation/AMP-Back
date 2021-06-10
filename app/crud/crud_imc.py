@@ -21,55 +21,74 @@ class CRUD_IMC:
     def get_all_data_from_one_user(self, dbSession: Session, limit: int, id_user: int):
         return dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).order_by(followup_model.imc_follow_up.date.desc()).limit(limit).all()
 
+    # to keep
+    # get all data for each day but with several data if there are for a day
     def get_data_period(self, dbSession: Session, id_user: int, nbDay: int):
         timeD = timedelta(days=nbDay)
         today = date.today() + timedelta(days=1)
         before = date.today() - timeD
+
+        last_period = dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).filter(followup_model.imc_follow_up.date.between(before, today)).order_by(followup_model.imc_follow_up.date.desc()).all()
+
+        return last_period
+
+
+    def replaceNoneVal(self, tab):
+        oldWeight = None
+        oldImc = None
+        for i in tab:
+            if i['weight'] == None or i['imc_computed']  == None:
+                i['weight'] = oldWeight 
+                i['imc_computed'] = oldImc
+                i['is_fake'] = True
+            else:
+                oldWeight = i['weight']
+                oldImc = i['imc_computed'] 
+        return tab
+
+    # get all data for each day but with ONLY ONE for each day : it compute an average
+    def get_data_period_average(self, dbSession: Session, id_user: int, nbDay: int):
+        befor = date.today() -  timedelta(days=nbDay-1)
+
+        i = 0
+        res = []
+        while i < nbDay:
+            theDate = date.today() - timedelta(days=i+1)
+            avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == theDate.year, followup_model.imc_follow_up.month == theDate.month, followup_model.imc_follow_up.day == theDate.day)).all()
+            if avg_on_day[0][0] == None:
+                res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":None, "weight": None})
+            else:
+                 res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_day[0][0], 2), "weight": round(avg_on_day[0][1], 2)})
+            i += 1
         
-        last_week = dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).filter(followup_model.imc_follow_up.date.between(before, today)).order_by(followup_model.imc_follow_up.date.desc()).all()
+        # TODO : improvment
+        # faire une fonction qui remplace les eventuelle valeur manquante par des moyennes ()
+        res = self.replaceNoneVal(res)
+        return res
 
-        #
-        # WIP 
-        # I am refactoring
-        # 
-        # new version
-        # vingtcinq = datetime(2021, 5, 25)
-        # vingtcinqBis = datetime(2021, 5, 25, 23, 59)
 
-        # avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == 12, followup_model.imc_follow_up.date.between(vingtcinq, vingtcinqBis))).first()
-        # print("moyenne pour le 25 MAI")
-        # print(avg_on_day[0])
-        # pprint(avg_on_day)
-        # i = 0
-        # res = []
-        # beginDay = date.today() 
-        # minuit = datetime(today.year, today.month, today.day, 23, 59, 59)
-        # print(beginDay)
-        # print(minuit)
-        # avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == 12, followup_model.imc_follow_up.date.between(beginDay, minuit))).first()
-        # print("moyenne pour le aujourd'hui")
-        # print(avg_on_day[0])
-        # pprint(avg_on_day)
-        # while i < nbDay:
-        #     beginDay = beginDay - timedelta(days=1)
-        #     minuit = minuit - timedelta(days=1)
-        #     print("moyenne de : ")
-        #     print(beginDay)
-        #     avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == 12, followup_model.imc_follow_up.date.between(beginDay, minuit))).first()
-        #     res.append({"date": beginDay, "avg_weight": avg_on_day[1], "avg_imc": avg_on_day[0]})
-        #     i += 1
-        # pprint(res)
+    # get all data for each month but with ONLY ONE for each day : it compute an average
+    def get_data_period_month_average(self, dbSession: Session, id_user: int, nbMonth: int):
+        i = 0
+        res = []
+        while i < nbMonth:
+            theDate = date.today() - timedelta(days=i*30)
+            avg_on_month = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == theDate.year, followup_model.imc_follow_up.month == theDate.month)).all()
+            if avg_on_month[0][0] == None:
+                res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed": None, "weight": None})
+            else:
+                 res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_month[0][0], 2), "weight": round(avg_on_month[0][1], 2)})
+            i += 1
 
-        # average_today = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed)).filter(followup_model.imc_follow_up.user_id == 12).group_by(followup_model.imc_follow_up.date)
-        # print(average_today)
-        # faire de cette maniere
-        # period = [dbSession.(query).fileter(for jour in last_week)]
+        # faire une fonction pour les mois d'avant ?
+        return res
 
-        return last_week
 
     def get_one_item(self, dbSession: Session, id_to_find: int):
         return dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.id == id_to_find)
 
+    def get_last_imc_data(self, dbSession: Session, id_user: int):
+        return dbSession.query(followup_model.imc_follow_up).filter(followup_model.imc_follow_up.user_id == id_user).order_by(followup_model.imc_follow_up.date.desc()).first()
 
     def add_one_elem(self, body_followup_imc: followup_imc, dbSession: Session):
         if Session == None:
@@ -80,7 +99,6 @@ class CRUD_IMC:
         newData.imc_computed = body_followup_imc.imc
         newData.weight = body_followup_imc.weight
         newData.date = body_followup_imc.date
-        # problems : some date seem not to be added
         newData.day = body_followup_imc.date.day
         newData.month = body_followup_imc.date.month
         newData.year = body_followup_imc.date.year
