@@ -56,7 +56,7 @@ class CRUD_IMC:
         # 
         # new version
         # today = date.today() + timedelta(days=1)
-        befor = date.today() -  timedelta(days=nbDay)
+        befor = date.today() -  timedelta(days=nbDay-1)
         vingtcinq = datetime(2021, 5, 25)
         vingtcinqBis = datetime(2021, 5, 25, 23, 59)
         today = vingtcinq
@@ -77,7 +77,10 @@ class CRUD_IMC:
         res = []
         while i < nbDay:
             theDate = date.today() - timedelta(days=i+1)
+            print("the date")
+            print(theDate)
             avg_on_day = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == theDate.year, followup_model.imc_follow_up.month == theDate.month, followup_model.imc_follow_up.day == theDate.day)).all()
+            print(avg_on_day)
             if avg_on_day[0][0] == None:
                 res.append({"date":theDate, "day":theDate.day, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":None, "weight": None})
             else:
@@ -102,7 +105,7 @@ class CRUD_IMC:
             theDate = date.today() - timedelta(days=i*30)
             avg_on_month = dbSession.query(func.avg(followup_model.imc_follow_up.imc_computed), func.avg(followup_model.imc_follow_up.weight)).filter(and_(followup_model.imc_follow_up.user_id == id_user, followup_model.imc_follow_up.year == theDate.year, followup_model.imc_follow_up.month == theDate.month)).all()
             if avg_on_month[0][0] == None:
-                res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed": 0, "weight": 0})
+                res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed": None, "weight": None})
             else:
                  res.append({"date":theDate, "month":theDate.month, "year":theDate.year, "user_id":id_user, "imc_computed":round(avg_on_month[0][0], 2), "weight": round(avg_on_month[0][1], 2)})
             i += 1
