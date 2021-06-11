@@ -1,0 +1,25 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+pytest = "*"
+
+[packages]
+fastapi = "*"
+alembic = "*"
+uvicorn = "*"
+sqlalchemy = "*"
+sqlalchemy_filters = "*"
+pydantic = "*"
+psycopg2-binary = "*"
+python-multipart = "*"
+requests = "*"
+python-dotenv = "*"
+aiofiles = "0.6.0"
+passlib = "*"
+
+[requires]
+python_version = "3.8"
